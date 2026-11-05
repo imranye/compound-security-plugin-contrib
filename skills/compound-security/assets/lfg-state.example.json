@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "example_only": true,
+  "run_id": "example-tenant-export-run",
+  "state": "partial",
+  "goal": "Fix independently confirmed tenant export isolation findings locally.",
+  "target": "/example/repository",
+  "scope": ["src/export.js", "tests/export-security.test.js"],
+  "restrictions": ["local changes only", "no production access"],
+  "current_revision": "example-fixed-commit+dirty:example-digest",
+  "work_source": {
+    "kind": "remediation_plan",
+    "path": "REMEDIATION-PLAN.md",
+    "audit_path": "audit/findings.json",
+    "audit_revision": "example-audited-commit"
+  },
+  "stages": [
+    {
+      "name": "recall",
+      "state": "completed",
+      "evidence": ["RECALL.md"]
+    },
+    {
+      "name": "audit/validate",
+      "state": "completed",
+      "evidence": ["audit/findings.json", "audit/coverage-ledger.json", "audit/REPORT.md"]
+    },
+    {
+      "name": "plan",
+      "state": "completed",
+      "evidence": ["REMEDIATION-PLAN.md"]
+    },
+    {
+      "name": "fix",
+      "state": "completed",
+      "evidence": ["closure.json", "evidence/local-patch.diff"]
+    },
+    {
+      "name": "verify",
+      "state": "blocked",
+      "reason": "The independent reviewer is available but the required isolated test runner is unavailable.",
+      "evidence": ["evidence/verification-blocker.md"]
+    },
+    {
+      "name": "compound",
+      "state": "pending",
+      "reason": "Verification is incomplete; no verified lesson has been recorded."
+    },
+    {
+      "name": "report",
+      "state": "completed",
+      "evidence": ["LFG-REPORT.md"]
+    }
+  ],
+  "budget": {
+    "max_agent_invocations": 20,
+    "agent_invocations_spent": 12,
+    "max_repair_retries_per_finding": 2
+  },
+  "findings": [
+    {
+      "fingerprint": "example:tenant-export:missing-owner-check",
+      "closure_status": "fixed_unverified",
+      "initial_attempts": 1,
+      "repair_retries_spent": 0,
+      "attempt_history": [
+        {
+          "attempt": 1,
+          "kind": "initial",
+          "revision": "example-fixed-commit+dirty:example-digest",
+          "result": "verification_blocked",
+          "evidence": ["evidence/local-patch.diff", "evidence/verification-blocker.md"]
+        }
+      ]
+    }
+  ],
+  "blockers": [
+    {
+      "stage": "verify",
+      "fingerprint": "example:tenant-export:missing-owner-check",
+      "fact": "No runner currently enforces the required execution isolation and resource limits.",
+      "next_action": "Provide a compliant runner, then execute the baseline and patched regressions plus legitimate-use checks and independent review."
+    }
+  ],
+  "next_action": "Resume verification after the required runner becomes available; preserve the original audit and recorded attempt count."
+}

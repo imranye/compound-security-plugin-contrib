@@ -1,0 +1,34 @@
+{
+  "name": "compound-security",
+  "version": "0.2.0",
+  "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
+  "author": {
+    "name": "Offense Research"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "security",
+    "audit",
+    "remediation",
+    "verification",
+    "compound-security"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Compound Security",
+    "shortDescription": "Choose, audit, fix, and verify security work.",
+    "longDescription": "Get a useful security starting point, brainstorm a scoped goal, and let LFG carry local audit, remediation, independent verification, and reusable prevention forward.",
+    "developerName": "Offense Research",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Help me choose a security starting point for this project",
+      "Brainstorm the highest-value security work before launch",
+      "LFG: take this security goal through verified local fixes and prevention"
+    ]
+  }
+}
