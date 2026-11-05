@@ -43,11 +43,11 @@ Render exactly one syntax for the installed host:
 | Installation | Invocation form |
 | --- | --- |
 | Claude Code plugin | `/compound-security:cs-<mode> <task>` |
-| Codex plugin with wrappers exposed | `$cs-<mode> <task>` |
+| Codex plugin with wrappers exposed | `$compound-security:cs-<mode> <task>` |
 | Standalone core in Codex | `$compound-security <mode> <task>` |
 | Other skill host | `Use compound-security in <mode> mode to <task>` |
 
-For example, on the Codex plugin: `$cs-brainstorm we are launching a multi-tenant SaaS; help me choose the first security check`. On a standalone installation, give `$compound-security brainstorm we are launching a multi-tenant SaaS; help me choose the first security check` instead. Do not display both forms to the same user unless they asked about portability.
+For example, on the Codex plugin: `$compound-security:cs-brainstorm we are launching a multi-tenant SaaS; help me choose the first security check`. On a standalone installation, give `$compound-security brainstorm we are launching a multi-tenant SaaS; help me choose the first security check` instead. Do not display both forms to the same user unless they asked about portability.
 
 Keep the response small:
 

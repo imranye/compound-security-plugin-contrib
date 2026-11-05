@@ -52,20 +52,20 @@ For Claude Code, use the plugin namespace:
 /compound-security:cs-compound retain the verified prevention lessons
 ```
 
-For Codex, invoke the installed skill with `$`, for example:
+For Codex, invoke plugin skills with the `compound-security:` prefix inside the Codex prompt. Type `$compound-security:` to find them in the skill picker. For example:
 
 ```text
-$cs-help I'm new to this. Recommend a starting point for this project.
-$cs-brainstorm Help me prioritize security work before launch.
-$cs-lfg Carry the selected scope through local fixes, verification, and prevention.
-$cs-audit review the authentication and tenant-isolation code
-$cs-run audit this repository and fix confirmed findings locally
-$cs-status summarize the latest run
+$compound-security:cs-help I'm new to this. Recommend a starting point for this project.
+$compound-security:cs-brainstorm Help me prioritize security work before launch.
+$compound-security:cs-lfg Carry the selected scope through local fixes, verification, and prevention.
+$compound-security:cs-audit review the authentication and tenant-isolation code
+$compound-security:cs-run audit this repository and fix confirmed findings locally
+$compound-security:cs-status summarize the latest run
 ```
 
 The core [SKILL.md](skills/compound-security/SKILL.md) defines each mode, its prerequisites, and the artifact contract. Wrappers delegate to that same core rather than maintaining separate methodologies.
 
-If only the standalone core skill is installed, use `$compound-security help`, `$compound-security brainstorm`, or `$compound-security lfg` with the same request. The short `$cs-*` entry points belong to the plugin package.
+If only the standalone core skill is installed, use `$compound-security help`, `$compound-security brainstorm`, or `$compound-security lfg` with the same request. The short `$compound-security:cs-*` entry points belong to the plugin package.
 
 ## LFG and run
 

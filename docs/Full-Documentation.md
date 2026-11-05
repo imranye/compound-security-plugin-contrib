@@ -128,20 +128,20 @@ For Claude Code, use the plugin namespace:
 /compound-security:cs-compound retain the verified prevention lessons
 ```
 
-For Codex, invoke the installed skill with `$`, for example:
+For Codex, invoke plugin skills with the `compound-security:` prefix inside the Codex prompt. Type `$compound-security:` to find them in the skill picker. For example:
 
 ```text
-$cs-help I'm new to this. Recommend a starting point for this project.
-$cs-brainstorm Help me prioritize security work before launch.
-$cs-lfg Carry the selected scope through local fixes, verification, and prevention.
-$cs-audit review the authentication and tenant-isolation code
-$cs-run audit this repository and fix confirmed findings locally
-$cs-status summarize the latest run
+$compound-security:cs-help I'm new to this. Recommend a starting point for this project.
+$compound-security:cs-brainstorm Help me prioritize security work before launch.
+$compound-security:cs-lfg Carry the selected scope through local fixes, verification, and prevention.
+$compound-security:cs-audit review the authentication and tenant-isolation code
+$compound-security:cs-run audit this repository and fix confirmed findings locally
+$compound-security:cs-status summarize the latest run
 ```
 
 The core [SKILL.md](#document-02) defines each mode, its prerequisites, and the artifact contract. Wrappers delegate to that same core rather than maintaining separate methodologies.
 
-If only the standalone core skill is installed, use `$compound-security help`, `$compound-security brainstorm`, or `$compound-security lfg` with the same request. The short `$cs-*` entry points belong to the plugin package.
+If only the standalone core skill is installed, use `$compound-security help`, `$compound-security brainstorm`, or `$compound-security lfg` with the same request. The short `$compound-security:cs-*` entry points belong to the plugin package.
 
 ### LFG and run
 
@@ -288,7 +288,7 @@ Dispatch before creating a run or starting an audit:
 - **LFG:** read [lfg.md](#document-05), establish the goal and current artifacts, then orchestrate only the missing stages below. Preserve the user’s restrictions, checkpoint progress, and honor retry/agent budgets. The [checkpoint example](#document-53) is a synthetic format illustration, not execution evidence or permission.
 - **Other modes:** run only the requested stage and its required prerequisites. `run` requests the full pipeline; `lfg` chooses and resumes a route based on current evidence. Neither needs repetitive approval for already requested local work.
 
-For command suggestions, use `/compound-security:cs-<mode>` in Claude Code, `$cs-<mode>` when plugin entry points are installed in Codex, or `$compound-security <mode>` when only the core is installed. Do not assume the short entry skills are installed just because the core is available.
+For command suggestions, use `/compound-security:cs-<mode>` in Claude Code, `$compound-security:cs-<mode>` when plugin entry points are installed in Codex, or `$compound-security <mode>` when only the core is installed. Do not assume the short entry skills are installed just because the core is available.
 
 ### Resolve inputs and capabilities
 
@@ -427,11 +427,11 @@ Render exactly one syntax for the installed host:
 | Installation | Invocation form |
 | --- | --- |
 | Claude Code plugin | `/compound-security:cs-<mode> <task>` |
-| Codex plugin with wrappers exposed | `$cs-<mode> <task>` |
+| Codex plugin with wrappers exposed | `$compound-security:cs-<mode> <task>` |
 | Standalone core in Codex | `$compound-security <mode> <task>` |
 | Other skill host | `Use compound-security in <mode> mode to <task>` |
 
-For example, on the Codex plugin: `$cs-brainstorm we are launching a multi-tenant SaaS; help me choose the first security check`. On a standalone installation, give `$compound-security brainstorm we are launching a multi-tenant SaaS; help me choose the first security check` instead. Do not display both forms to the same user unless they asked about portability.
+For example, on the Codex plugin: `$compound-security:cs-brainstorm we are launching a multi-tenant SaaS; help me choose the first security check`. On a standalone installation, give `$compound-security brainstorm we are launching a multi-tenant SaaS; help me choose the first security check` instead. Do not display both forms to the same user unless they asked about portability.
 
 Keep the response small:
 

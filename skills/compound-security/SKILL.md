@@ -38,7 +38,7 @@ Dispatch before creating a run or starting an audit:
 - **LFG:** read [lfg.md](references/lfg.md), establish the goal and current artifacts, then orchestrate only the missing stages below. Preserve the user’s restrictions, checkpoint progress, and honor retry/agent budgets. The [checkpoint example](assets/lfg-state.example.json) is a synthetic format illustration, not execution evidence or permission.
 - **Other modes:** run only the requested stage and its required prerequisites. `run` requests the full pipeline; `lfg` chooses and resumes a route based on current evidence. Neither needs repetitive approval for already requested local work.
 
-For command suggestions, use `/compound-security:cs-<mode>` in Claude Code, `$cs-<mode>` when plugin entry points are installed in Codex, or `$compound-security <mode>` when only the core is installed. Do not assume the short entry skills are installed just because the core is available.
+For command suggestions, use `/compound-security:cs-<mode>` in Claude Code, `$compound-security:cs-<mode>` when plugin entry points are installed in Codex, or `$compound-security <mode>` when only the core is installed. Do not assume the short entry skills are installed just because the core is available.
 
 ## Resolve inputs and capabilities
 
