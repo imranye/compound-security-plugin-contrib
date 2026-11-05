@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "inspected_on": "2026-11-04",
+  "sources": [
+    {
+      "repository": "https://github.com/cloudflare/security-audit-skill",
+      "commit": "c1c8a8c1471069fb0e188eeaff69b8e8db6564a8",
+      "license": "MIT",
+      "notice": "licenses/Cloudflare-MIT.txt",
+      "contribution": "Source-grounded security review, coverage, validation, execution isolation, and reporting methodology."
+    },
+    {
+      "repository": "https://github.com/EveryInc/compound-engineering-plugin",
+      "commit": "a76c45cef80bc5564a4fc7c06614ed278e4c3736",
+      "license": "MIT",
+      "notice": "licenses/Every-MIT.txt",
+      "contribution": "Plan/work/review/compound loop, retrieval of prior lessons, durable prevention, and root-native plugin packaging. Help discovery, scoped brainstorming, and adaptive LFG orchestration."
+    }
+  ]
+}
