@@ -47,7 +47,7 @@ def validate(root):
         source = "./" if label == "Claude" else {"source": "local", "path": "./"}
         check(entry.get("source") == source, f"{label}: invalid local source")
 
-    modes = ("help", "brainstorm", "lfg", "audit", "plan", "fix", "verify", "compound", "run", "status")
+    modes = ("help", "brainstorm", "lfg", "patch", "audit", "plan", "fix", "verify", "compound", "run", "status")
     core = root / "skills/compound-security/SKILL.md"
     check(core.is_file(), "Missing skills/compound-security/SKILL.md")
     core_root = core.parent
@@ -56,6 +56,8 @@ def validate(root):
         "references/execution.md", "references/remediation.md", "references/knowledge.md",
         "references/reviewer-prompts.md", "references/closure-contract.md", "references/synthesis.md",
         "references/help.md", "references/brainstorm.md", "references/lfg.md", "references/commands.md",
+        "references/patching.md", "assets/patch-plan.md", "assets/patch-state.example.json",
+        "scripts/validate-patch.cjs", "scripts/validate-patch.test.cjs",
         "assets/security-brief.md", "assets/lfg-state.example.json",
         "assets/remediation-plan.md", "assets/security-lesson.md", "assets/closure.example.json",
         "scripts/validate-closure.cjs", "scripts/validate-closure.test.cjs",
@@ -138,7 +140,7 @@ def main():
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    print("Package structure valid: 2 host manifests, 2 marketplaces, 1 core skill, 10 entry points, 2 source notices.")
+    print("Package structure valid: 2 host manifests, 2 marketplaces, 1 core skill, 11 entry points, 2 source notices.")
     print("This is a structural check, not host-load or security-workflow validation.")
     return 0
 

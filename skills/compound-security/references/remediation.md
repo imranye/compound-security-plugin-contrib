@@ -10,6 +10,8 @@ Dependency upgrades: inspect manifests/lockfiles, dependency paths and usage, su
 
 Infrastructure changes: map control-plane/runtime versions, rollout order, workload disruption limits, removed APIs/config, rollback prerequisites, and health checks. Local config edits/tests establish a proposed fix, not a deployed repair. Keep external checks explicit.
 
+For npm/pnpm work, follow [patching.md](patching.md) for inventory, candidate comparison, baseline/rehearsal, and deployment evidence. Preserve the finding evidence requirements below; patch-state labels cannot bypass them.
+
 ## Evidence matrix
 
 | Check | Required observation |

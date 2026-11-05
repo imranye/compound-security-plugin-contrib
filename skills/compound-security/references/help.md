@@ -16,6 +16,7 @@ If the user has supplied no goal, explain three concrete starting points such as
 | --- | --- | --- |
 | “I don't know where to start” or “What should we secure first?” | `brainstorm` | Pick a worthwhile, bounded task with a clear done condition |
 | “We are launching” or “Can users access each other's data?” | Scoped `audit` | Review the relevant source boundaries and distinguish evidence from unknowns |
+| A dependency upgrade, package advisory, or existing upgrade PR | `patch` | Establish applicability, select a compatible upgrade, rehearse locally, and plan rollout/recovery |
 | A scanner alert, suspected bug, or unverified report | Scoped `audit` | Validate the claim before treating it as a vulnerability to fix |
 | Current independently confirmed findings, no repair plan | `plan` | Define the minimal fixes, tests, dependencies, and rollback |
 | Confirmed findings and a concrete repair plan | `fix` | Implement requested local repairs and run verification where supported |

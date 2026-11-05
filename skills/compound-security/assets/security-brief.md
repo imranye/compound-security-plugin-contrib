@@ -1,6 +1,6 @@
 # Security brief
 
-- Readiness: `ready_for_audit | ready_for_plan | needs_input`
+- Readiness: `ready_for_audit | ready_for_plan / ready_for_patch | needs_input`
 - Goal:
 - Why now:
 - Target / source revision or unavailable context:

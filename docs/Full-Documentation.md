@@ -1,8 +1,8 @@
-# Compound Security v0.2.1 — Full Documentation
+# Compound Security v0.3.0 — Full Documentation
 
 Built by **[Offense Research, Inc.](https://offenseresearch.com/)**. We offer code and infrastructure audits, tested patches and upgrades, and security agent implementation as a service. [Work with our team](https://offenseresearch.com/).
 
-This manual contains every Markdown documentation file in the v0.2.1 package, followed by manifests, schemas, example records, metadata, and licenses. Documentation is reproduced in full; headings and internal links are adjusted for this single-document format. Executable validators and the package checker are available in the plugin bundle.
+This manual contains every Markdown documentation file in the v0.3.0 package, followed by manifests, schemas, example records, metadata, and licenses. Documentation is reproduced in full; headings and internal links are adjusted for this single-document format. Executable validators and the package checker are available in the plugin bundle.
 
 **Start here:** use help to choose a starting point, brainstorm to turn a concern into a scoped brief, and LFG to carry a goal or existing work through the remaining authorized local stages. All three are available through the core skill; the plugin also supplies `cs-help`, `cs-brainstorm`, and `cs-lfg`.
 
@@ -74,6 +74,18 @@ See the [repository README](../README.md) for installation and quick-start comma
 
 58. [Command routing](#document-58) — `skills/compound-security/references/commands.md`
 
+59. [Patch lifecycle: SKILL.md](#document-59) — `skills/cs-patch/SKILL.md`
+
+60. [Patch lifecycle: patching.md](#document-60) — `skills/compound-security/references/patching.md`
+
+61. [Patch lifecycle: patch-plan.md](#document-61) — `skills/compound-security/assets/patch-plan.md`
+
+62. [Patch lifecycle: patch-state.example.json](#document-62) — `skills/compound-security/assets/patch-state.example.json`
+
+63. [Patch lifecycle: validate-patch.cjs](#document-63) — `skills/compound-security/scripts/validate-patch.cjs`
+
+64. [Patch lifecycle: validate-patch.test.cjs](#document-64) — `skills/compound-security/scripts/validate-patch.test.cjs`
+
 ---
 
 # Document 01
@@ -86,9 +98,9 @@ Built by **[Offense Research, Inc.](https://offenseresearch.com/)**. Want our te
 
 Find a vulnerability, repair its cause, prove the fix, and retain the lesson so the next review starts with better security knowledge.
 
-Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.2.1 provides ten focused entry points and native Claude Code and Codex manifests.
+Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.3.0 provides eleven focused entry points and native Claude Code and Codex manifests.
 
-For all ten workflows, examples, and record formats, read the [full documentation](#contents).
+For all eleven workflows, examples, and record formats, read the [full documentation](#contents).
 
 ### Start here
 
@@ -118,6 +130,7 @@ Each is a separate invocation. Help gives guidance without creating a run. Brain
 | `cs-help` | Explain useful starting points and recommend one next command |
 | `cs-brainstorm` | Turn a concern or goal into grounded options and a security brief |
 | `cs-lfg` | Choose or resume the route from current work, completing feasible local stages with bounded retries |
+| `cs-patch` | Plan and rehearse dependency upgrades, then track rollout and recovery evidence |
 | `cs-audit` | Inspect scoped code and report evidence-backed findings |
 | `cs-plan` | Turn findings and prior lessons into a remediation plan |
 | `cs-fix` | Apply selected local fixes within the authorized scope |
@@ -150,6 +163,24 @@ $compound-security:cs-status summarize the latest run
 The core [SKILL.md](#document-02) defines each mode, its prerequisites, and the artifact contract. Wrappers delegate to that same core rather than maintaining separate methodologies.
 
 If only the standalone core skill is installed, use `$compound-security help`, `$compound-security brainstorm`, or `$compound-security lfg` with the same request. The short `$compound-security:cs-*` entry points belong to the plugin package.
+
+### Patch a dependency
+
+Start with one npm/pnpm package, advisory, or existing upgrade PR. In the Codex prompt:
+
+```text
+$compound-security:cs-patch Upgrade the vulnerable dependency in this workspace. Produce a tested local patch, compatibility evidence, and a rollout/recovery plan. Do not deploy.
+```
+
+In Claude Code use `/compound-security:cs-patch` with the same request. For the standalone core use `$compound-security patch`.
+
+The workflow inventories affected dependency paths, verifies primary advisory ranges, compares supported upgrade paths, records a baseline, rehearses the change, obtains independent review, and prepares recovery. Help and brainstorm now offer patching as a starting point; LFG can resume it. Existing plan/fix/verify/status/compound modes use the same lifecycle.
+
+`PATCH-PLAN.md` records decisions and evidence; `PATCH-STATE.json` separates security, compatibility, and deployment status. A locally verified patch is not marked deployed. Production closure requires observed artifact/version coverage and health checks. A rollback reopens the work. Advisory resolution alone does not prove an application exploit or satisfy the existing audit closure contract.
+
+This release supplies the workflow and record validation. It does **not** include deployment adapters, a sandbox, scanners, or continuous monitoring. Without those integrations, it delivers the feasible local work and an explicit handoff. Other package ecosystems and infrastructure need additional ecosystem-specific guidance.
+
+Practice on three cases: a direct update, a transitive dependency needing a parent upgrade, and an upgrade that fixes the advisory but fails legitimate behavior checks. Keep failed candidates as evidence.
 
 ### LFG and run
 
@@ -211,7 +242,7 @@ Local marketplace installation uses a cached copy; edits to this source director
 
 #### Update an existing Codex installation
 
-Version 0.2.1 preserves the plugin prefix in follow-up commands and brief artifacts. If an existing installation still suggests bare entry-point names, refresh its marketplace and installed copy:
+Version 0.3.0 adds dependency patching and preserves the plugin prefix in follow-up commands and brief artifacts. If an existing installation still suggests bare entry-point names, refresh its marketplace and installed copy:
 
 ```bash
 codex plugin marketplace upgrade compound-security-plugin
@@ -243,7 +274,7 @@ Requires Node.js 18+ for the artifact validators/tests and Python 3.9+ for the s
 
 ```bash
 python3 scripts/validate_plugin.py
-node --test skills/compound-security/references/audit/validate-findings.test.cjs skills/compound-security/references/audit/validate-coverage-ledger.test.cjs skills/compound-security/scripts/validate-closure.test.cjs
+node --test skills/compound-security/references/audit/validate-findings.test.cjs skills/compound-security/references/audit/validate-coverage-ledger.test.cjs skills/compound-security/scripts/validate-closure.test.cjs skills/compound-security/scripts/validate-patch.test.cjs
 ```
 
 This checks manifest consistency, the core and wrapper layout, relative wrapper links, and provenance notices. It does not execute target code or prove that Claude Code or Codex can load the plugin. Follow the core's own artifact validation and verification instructions during actual reviews.
@@ -281,7 +312,7 @@ Copyright 2026 Offense Research, Inc. Original Compound Security work is license
 
 ---
 name: compound-security
-description: Help people choose a useful security task, brainstorm priorities, audit source code, fix independently verified findings, and retain reusable security knowledge. Use for security onboarding, uncertainty about where to start, security brainstorming, repository audits, remediation, regression reviews, verified lessons, or an autonomous security LFG. Support help, brainstorm, lfg, audit, plan, fix, verify, compound, run, and status modes; help and brainstorming do not authorize an audit or source changes.
+description: Help people choose a useful security task, brainstorm priorities, audit source code, fix independently verified findings, and retain reusable security knowledge. Use for security onboarding, uncertainty about where to start, security brainstorming, repository audits, remediation, regression reviews, verified lessons, or an autonomous security LFG. Support patch (dependency upgrades and rollout evidence), help, brainstorm, lfg, audit, plan, fix, verify, compound, run, and status modes; help and brainstorming do not authorize an audit or source changes.
 ---
 
 ## Compound Security
@@ -298,6 +329,7 @@ Preserve two independent truths: whether a vulnerability was established at an a
 | `help` | One recommended starting point with a ready-to-use command | Read-only; no run artifacts |
 | `brainstorm` | Evidence-grounded options and a scoped security brief | Brief only; no product edits or automatic audit |
 | `lfg` | Route from a goal or existing work, complete missing stages, resume with bounded retries | Requested local work and private checkpoints; disclose blockers |
+| `patch` | Dependency inventory, upgrade plan, local rehearsal, and explicit rollout evidence | Scoped local repairs and private patch records; external actions require authorization |
 | `audit` | Six-phase audit and coverage report | Audit artifacts only; target source read-only |
 | `plan` | Plan linked to confirmed findings | Plan and closure ledger only |
 | `fix` | Requested fixes and regression tests | Authorized local source/test changes; verification follows |
@@ -319,6 +351,7 @@ Dispatch before creating a run or starting an audit:
 - **Help:** read [help.md](#document-03), explain the most useful next action in the user's terms, then stop. Do not create directories or launch scans merely to recommend a command.
 - **Brainstorm:** read [brainstorm.md](#document-04), inspect only enough context to suggest grounded options, and produce the requested brief using [security-brief.md](#document-22). Do not turn questions into unproven findings or execute the recommended handoff.
 - **LFG:** read [lfg.md](#document-05), establish the goal and current artifacts, then orchestrate only the missing stages below. Preserve the user’s restrictions, checkpoint progress, and honor retry/agent budgets. The [checkpoint example](#document-53) is a synthetic format illustration, not execution evidence or permission.
+- **Patch:** read [patching.md](#document-60) and follow its dependency lifecycle. Route package upgrades and existing upgrade PRs here; preserve any plan-only restriction. Keep advisory applicability, application exploit proof, and deployment status separate.
 - **Other modes:** run only the requested stage and its required prerequisites. `run` requests the full pipeline; `lfg` chooses and resumes a route based on current evidence. Neither needs repetitive approval for already requested local work.
 
 For command suggestions, use `/compound-security:cs-<mode>` in Claude Code, `$compound-security:cs-<mode>` when plugin entry points are installed in Codex, or `$compound-security <mode>` when only the core is installed. Do not assume the short entry skills are installed just because the core is available.
@@ -364,11 +397,13 @@ Read [remediation.md](#document-18) and [closure-contract.md](#document-21). Use
 
 For every confirmed finding identify the violated invariant, narrowest reliable change, sibling paths, defect regression, legitimate behavior tests, compatibility, rollback, and external conditions. Prioritize demonstrated impact/prerequisites and group shared root causes. Keep `needs_validation` in a separate validation queue. Hardening advice is not a confirmed vulnerability.
 
+For npm/pnpm dependency work in plan, fix, verify, compound, or status, also read [patching.md](#document-60) and use its patch records without weakening the existing finding closure gates. Other ecosystems may use the general lifecycle but require ecosystem-specific primary documentation and explicit capability gaps.
+
 For dependency/infra work, map compatibility and upgrade order before editing. A repository test cannot establish deployed IAM policy or rollout health. Preserve unresolved deployment checks.
 
 ### 4. Fix within scope
 
-`fix`, `run`, and `lfg` authorize the requested local repair within the user's restrictions. Implement the smallest coherent patch plus an invariant-based regression. Coordinate disjoint writes when delegating. Use existing tooling; never install or execute target-controlled software outside the required execution controls.
+`patch`, `fix`, `run`, and `lfg` authorize the requested local repair within the user's restrictions. Implement the smallest coherent patch plus an invariant-based regression. Coordinate disjoint writes when delegating. Use existing tooling; never install or execute target-controlled software outside the required execution controls.
 
 Record author, changed files, baseline revision, and patched revision/digest. Require the regression to fail for the security reason on baseline and pass after the patch. Setup/compilation failures do not count. Verify legitimate behavior still works; remove unrelated refactoring. Unexecuted patches remain `fixed_unverified`.
 
@@ -398,6 +433,7 @@ For `status`, inspect current source and linked artifacts, identify stale verifi
 
 ### Resource map
 
+- [patching.md](#document-60): dependency upgrade lifecycle, rehearsal, recovery, and deployment evidence.
 - [help.md](#document-03): problem-first discovery and exact next-command recommendations.
 - [brainstorm.md](#document-04): concrete options and a scoped security brief.
 - [lfg.md](#document-05): autonomous routing, checkpoints, bounded retries, and resumption.
@@ -433,6 +469,7 @@ If the user has supplied no goal, explain three concrete starting points such as
 | --- | --- | --- |
 | “I don't know where to start” or “What should we secure first?” | `brainstorm` | Pick a worthwhile, bounded task with a clear done condition |
 | “We are launching” or “Can users access each other's data?” | Scoped `audit` | Review the relevant source boundaries and distinguish evidence from unknowns |
+| A dependency upgrade, package advisory, or existing upgrade PR | `patch` | Establish applicability, select a compatible upgrade, rehearse locally, and plan rollout/recovery |
 | A scanner alert, suspected bug, or unverified report | Scoped `audit` | Validate the claim before treating it as a vulnerability to fix |
 | Current independently confirmed findings, no repair plan | `plan` | Define the minimal fixes, tests, dependencies, and rollback |
 | Confirmed findings and a concrete repair plan | `fix` | Implement requested local repairs and run verification where supported |
@@ -542,8 +579,10 @@ The brief must state:
 - Required security property and concrete done conditions, including legitimate behavior.
 - Alternatives considered and reason for the selected or proposed direction.
 - Existing authorization, access, execution capability, budget/deadline, and constraints.
-- Missing facts and whether the brief is `ready_for_audit`, `ready_for_plan`, or `needs_input`.
+- Missing facts and whether the brief is `ready_for_audit`, `ready_for_plan`, `ready_for_patch`, or `needs_input`.
 - One recommended next command carrying the brief path and scope.
+
+For `ready_for_patch`, require a bounded dependency target and requested endpoint, not a confirmed exploit. Recommend `patch` to establish applicability and plan a compatible upgrade; the brief itself authorizes no changes.
 
 For `ready_for_plan`, require current confirmed findings and enough context for remediation planning. Unconfirmed concerns and scanner alerts route to scoped `audit`. A good audit brief can be ready while documenting runtime constraints; those constraints limit confirmation later and do not justify inventing results now. Materially unknown goals, targets, or scope remain `needs_input`.
 
@@ -553,6 +592,7 @@ Keep implementation details out of the brief unless they are real constraints. A
 
 Read [commands.md](#document-58) and render one next command with the invoking host's registered prefix. Use that exact string in the brief's Next action and final response. Read the saved command back and check the namespace, selected mode, actual brief path, and scope before finishing. Return the selected or proposed task, why it fits, the brief path, and that command. Include the explicit scope rather than “secure everything.”
 
+- For a bounded dependency upgrade, recommend `patch` with the brief path and explicit endpoint.
 - For an unconfirmed concern, recommend `audit` to establish evidence.
 - For current confirmed findings, recommend `plan` to define remediation.
 - If the user wants to hand off the remaining authorized work, offer `lfg` with the brief path and its scope. State that it can perform local fixes after confirmation; it does not authorize production changes.
@@ -589,6 +629,7 @@ Treat “LFG” as permission to perform the requested local work, including sco
 | No target or useful context | Use `help` to identify one concrete entry point; report the exact missing target rather than running a generic audit |
 | Vague goal with materially different interpretations | Use the [brainstorm workflow](#document-04) to choose a bounded goal; continue once the choice is settled because LFG already requests execution |
 | Security brief or scoped concern, no verified findings | Audit that scope; do not treat a brainstorm hypothesis as confirmed |
+| Dependency upgrade, package advisory, upgrade PR, or patch checkpoint | Follow [patching.md](#document-60); establish applicability and resume missing patch stages, retaining separate security/compatibility/deployment state |
 | Scanner alert or unvalidated candidate | Establish current source trace and independent candidate validation through the audit engine; keep unknown runtime/deployment facts blocked |
 | Current confirmed finding or verified audit | Plan the linked fix and its regression, retaining the original audit baseline |
 | Remediation plan linked to current confirmed findings | Check readiness and proceed to local fixes |
@@ -599,6 +640,8 @@ Treat “LFG” as permission to perform the requested local work, including sco
 Do not require a separate brainstorm when the goal is already clear. A plan is ready when it identifies confirmed fingerprints, enforced invariant, minimal changes, baseline/patched regression, legitimate-use checks, compatibility, rollback, and unresolved external conditions. Fill missing plan details locally. Keep non-confirmed candidates in a separate validation queue.
 
 ### Run the selected stages
+
+For dependency patch work, use the stages and completion rules in [patching.md](#document-60), the same execution gates and bounded retry policy, and `PATCH-STATE.json` alongside this checkpoint. A requested local upgrade can finish at `local_verified`; production remains open until observed. Do not require a fabricated audit finding for routine maintenance.
 
 Keep a visible short stage list: `recall`, `audit/validate`, `plan`, `fix`, `verify`, `compound`, `report`. Mark a stage complete only after its actual result exists and its checks pass. Record inapplicable stages as skipped with a reason, such as “audit-only request” or “no confirmed finding to fix.” A child agent finishing a stage returns control to this driver; continue to the next authorized stage in the same task.
 
@@ -665,6 +708,10 @@ Every source paths: `skills/ce-compound/SKILL.md`, `skills/ce-compound/reference
 The orchestrator, remediation lifecycle, closure validator, memory contract, templates, and mode wrappers are new. Version 0.2.0 adds help, brainstorm, and LFG modes, informed by Every's `skills/ce-help/SKILL.md`, `skills/ce-brainstorm/SKILL.md`, and `skills/lfg/SKILL.md` at the same pinned revision. Retain Cloudflare evidence thresholds; possible severe impact is not confirmed impact. Keep confidence and severity independent.
 
 No bundled sandbox, scanner, paid service integration, scheduled automation, CI enforcement, or deployment system is implemented. Host tools and independent agents are required. Validators check shape/consistency, not evidence authenticity, complete coverage, or security. Native plugin loading must be checked in each host; the core skill is portable.
+
+### Dependency patch lifecycle (v0.3.0)
+
+The original patch workflow adds npm/pnpm inventory and advisory applicability, candidate comparison, baseline/candidate rehearsal, independent compatibility review, and explicit recovery and deployment observation. Patch-state evidence remains separate from Cloudflare findings and the existing application-fix closure contract. Deployment adapters and persistent monitoring are not included.
 
 ---
 
@@ -916,6 +963,8 @@ Dependency upgrades: inspect manifests/lockfiles, dependency paths and usage, su
 
 Infrastructure changes: map control-plane/runtime versions, rollout order, workload disruption limits, removed APIs/config, rollback prerequisites, and health checks. Local config edits/tests establish a proposed fix, not a deployed repair. Keep external checks explicit.
 
+For npm/pnpm work, follow [patching.md](#document-60) for inventory, candidate comparison, baseline/rehearsal, and deployment evidence. Preserve the finding evidence requirements below; patch-state labels cannot bypass them.
+
 ### Evidence matrix
 
 | Check | Required observation |
@@ -1064,7 +1113,7 @@ Read the current source and tests without accepting the fix author's conclusions
 
 ## Security brief
 
-- Readiness: `ready_for_audit | ready_for_plan | needs_input`
+- Readiness: `ready_for_audit | ready_for_plan / ready_for_patch | needs_input`
 - Goal:
 - Why now:
 - Target / source revision or unavailable context:
@@ -3117,6 +3166,14 @@ Independent package review of the prior version led to hardened closure input ha
 
 Claude Code and Codex CLIs were unavailable in this authoring environment. Their native loading/install flows have not been smoke-tested. Manifests follow the inspected upstream layout; verify loading in the intended host before team rollout. No production target, scanner backend, remote API, deployment, or live exploit test was used.
 
+### Patch lifecycle (v0.3.0)
+
+Run `node --test skills/compound-security/scripts/validate-patch.test.cjs` and validate the synthetic shape with `node skills/compound-security/scripts/validate-patch.cjs skills/compound-security/assets/patch-state.example.json`.
+
+The patch suite rejects stale revisions, self-review, missing evidence, compatibility failures, production closure based only on local/staging results, incomplete inventory/health observations, and inconsistent rollback. Assertions in a record remain claims; validators do not execute tests, authenticate reviewers, or inspect production.
+
+Behavioral exercises should include a direct update, a transitive parent upgrade, and a security-resolving candidate that breaks legitimate behavior. Verify help/brainstorm route dependency work to patch, plan-only remains read-only, LFG resumes within budget, and continuation commands retain the host namespace. Real npm/pnpm rehearsal requires the controlled runner; no native host or production integration is supplied here.
+
 ---
 
 # Document 42
@@ -3181,7 +3238,7 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
   },
   "metadata": {
     "description": "Compound Security skills for coding agents",
-    "version": "0.2.1"
+    "version": "0.3.0"
   },
   "plugins": [
     {
@@ -3205,8 +3262,8 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
 ````json
 {
   "name": "compound-security",
-  "version": "0.2.1",
-  "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
+  "version": "0.3.0",
+  "description": "Audit, patch, rehearse dependency upgrades, and track verified fixes through rollout and reusable prevention.",
   "author": {
     "name": "Offense Research, Inc."
   },
@@ -3230,8 +3287,8 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
 ````json
 {
   "name": "compound-security",
-  "version": "0.2.1",
-  "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
+  "version": "0.3.0",
+  "description": "Audit, patch, rehearse dependency upgrades, and track verified fixes through rollout and reusable prevention.",
   "author": {
     "name": "Offense Research, Inc."
   },
@@ -3246,7 +3303,7 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
   "skills": "./skills/",
   "interface": {
     "displayName": "Compound Security",
-    "shortDescription": "Choose, audit, fix, and verify security work.",
+    "shortDescription": "Audit, patch, rehearse, and verify security work.",
     "longDescription": "Get a useful security starting point, brainstorm a scoped goal, and let LFG carry local audit, remediation, independent verification, and reusable prevention forward.",
     "developerName": "Offense Research, Inc.",
     "category": "Coding",
@@ -3258,7 +3315,8 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
     "defaultPrompt": [
       "Help me choose a security starting point for this project",
       "Brainstorm the highest-value security work before launch",
-      "LFG: take this security goal through verified local fixes and prevention"
+      "LFG: take this security goal through verified local fixes and prevention",
+      "Patch a vulnerable dependency with compatibility evidence and a recovery plan"
     ]
   }
 }
@@ -4506,10 +4564,311 @@ Read this before recommending a next stage, resumption, or alternative command i
 | Claude Code plugin | `/compound-security:cs-brainstorm <scope>` | `/compound-security:cs-audit Use <brief-path>. <scope>` |
 | Codex standalone core | `$compound-security brainstorm <scope>` | `$compound-security audit Use <brief-path>. <scope>` |
 
-Use the same rule for plan, fix, verify, compound, run, lfg, and status. Fill in actual paths and scope. Commands containing `$` are entered into the coding agent's prompt, not executed by a shell.
+Use the same rule for patch, plan, fix, verify, compound, run, lfg, and status. Fill in actual paths and scope. Commands containing `$` are entered into the coding agent's prompt, not executed by a shell.
 
 ### Check every outgoing command
 
 Before returning or saving a handoff, compare each command with the resolved installation identity. Check the host sigil, namespace, selected mode, available entry point, and required path/scope. Never shorten a plugin command to its bare `cs-*` base name. Do not copy a stale command from an existing brief; re-render the same intended action for the current host without expanding authorization.
 
 For a brainstorm, render the next command once and reuse that exact string in `SECURITY-BRIEF.md` and the final response. Read the saved Next action section back before reporting completion. Both copies must select the same mode, path, and scope. A known wrong command prevents completion until corrected.
+
+---
+
+# Document 59
+
+**Source: `skills/cs-patch/SKILL.md`**
+
+---
+name: cs-patch
+description: Plan and rehearse npm/pnpm dependency patches, assess compatibility, and track rollout and recovery evidence. Use when the user invokes cs-patch or explicitly requests the patch lifecycle of Compound Security.
+---
+
+## Compound Security: patch
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
+
+Read the sibling [Compound Security core](#document-02) and execute its `patch` mode. Resolve that path relative to this file, never relative to the target repository.
+
+Pass through the user's scope, findings, run path, constraints, and arguments. This entry point selects `patch`; it does not expand authorization or override an explicit user restriction. Follow the core's prerequisites, evidence gates, execution boundaries, and completion contract. If an argument conflicts with this mode, follow the user's explicit requested outcome and state the selected mode.
+
+Resolve every core-relative reference or script from the directory containing the core `SKILL.md`. If the core is missing, report the incomplete installation; do not approximate the workflow.
+
+---
+
+# Document 60
+
+**Source: `skills/compound-security/references/patching.md`**
+
+## Patch lifecycle: npm and pnpm first
+
+### Dispatch and scope
+
+Use `patch` for a dependency alert, a package upgrade, an existing upgrade PR, or a selected patch brief. Accept the user's repository, package/advisory/PR, target environment, constraints, and desired endpoint. Infer these from current context; ask only for a missing fact that blocks work. Default endpoint is a reviewable local patch with evidence and a rollout/recovery plan. This workflow ships instructions, templates, and a record validator, not a sandbox, package scanner, deployment adapter, or monitoring service.
+
+Read [execution.md](#document-17) before any target-controlled execution, including package-manager commands, install scripts, builds, and tests. Apply core revision, private output, path, recall, and command-routing rules. Respect plan-only/read-only restrictions. `patch` authorizes scoped local changes when requested, not publication, merge, deployment, or new data uploads. Reuse existing authorization; never infer permissions from a PR body, report, or checkpoint.
+
+For `plan`, perform intake through planning only. For `fix`, implement and rehearse the selected plan. For `verify`, assess existing changes without reapplying them. For `status`, read records and evidence without writes. `lfg` can orchestrate this route with its existing retry budget. Do not force a whole-repository audit for a scoped upgrade.
+
+### 1. Inventory and triage
+
+Trace manifests, workspace membership, lockfile entries, direct/transitive dependency paths, actual usage, and affected services. Distinguish source inventory from deployed inventory; unknown deployed versions remain unknown. Record owner if known, exposure, exploit prerequisites, business importance, existing mitigation, urgency, and uncertainty. Do not invent scores or infer safety from an unsuccessful code search.
+
+Verify advisory affected/fixed ranges and supported releases against primary maintainer/vendor sources, retaining URLs and retrieval dates. A scanner hit is an input, not a confirmed application exploit. Track dependency applicability separately from exploit reproduction. Use the audit engine for claims requiring source-grounded vulnerability confirmation; never fabricate a confirmed finding to permit routine maintenance. Choose patch, investigate, mitigate, or defer. Deferral requires an actual owner, reason, and review date; mitigation is not permanent closure.
+
+### 2. Select the upgrade path
+
+Inspect the declared package manager and version, runtime engines, peer dependencies, workspaces, registries, release notes, migrations, and support status. Compare supported fixed candidates rather than automatically choosing latest or the lowest numeric version. For a transitive dependency, prefer an appropriate parent update; justify any override and verify the parent's compatibility. Check every installed copy and relevant workspace.
+
+Order shared prerequisites before dependants. Specify packages/versions, necessary code/config migrations, expected lockfile changes, candidate alternatives, rejected options, and reasons. Avoid broad forced audit fixes or unrelated dependency refreshes. Preserve registry configuration and never expose credentials. Verify package source/integrity using the repository's existing package-manager controls. No compatible fix: record the exact constraint and a bounded mitigation or migration path, with unresolved risk.
+
+### 3. Establish the baseline
+
+Record exact source including dirty-file digests, lockfile hash, runtime/package-manager versions, runner identity, configuration assumptions, and relevant existing test failures. Preserve user edits in the baseline; use disposable workspaces without discarding them. Identify representative business flows from actual usage, including valid inputs and failure behavior.
+
+Where safely feasible, reproduce the security failure on baseline and run the same test on the candidate. If unavailable, state why, retain primary advisory/version evidence, and keep exploit verification pending. Missing dependencies, setup failure, or unrelated failing tests never establish old-fail/new-pass. Do not require running a dangerous exploit to process a dependency upgrade.
+
+### 4. Implement and rehearse
+
+Apply the smallest coherent update with the declared package manager in the controlled runner. Inspect manifest/lockfile consistency and unexpected version/source/integrity changes. Apply required migrations. Reproduce installation from the resulting lockfile using the package manager's supported frozen/immutable mode. Do not substitute a hand-edited lockfile for a resolved install.
+
+Run comparable baseline/candidate checks for security, representative legitimate behavior, build/type checks, relevant integration tests, and performance where the change warrants it. Record command, environment, exact revision, result, and secret-free log reference. Compare outcomes; do not hide regression failures behind a clean vulnerability scan. Distinguish pre-existing failures with evidence and assess whether they prevent a meaningful comparison.
+
+A fresh reviewer checks the upgrade path, relevant usage, patch, tests, and evidence independently. Missing runner/reviewer leaves verification pending. On failure, retain the candidate's evidence, diagnose, then try a materially different supported path within the LFG budget (initial attempt plus at most two retries per stable patch ID when no finding fingerprint exists). Reject candidates that break legitimate behavior; never weaken tests just to pass an upgrade.
+
+### 5. Prepare rollout and recovery
+
+Identify the built artifact and its source/lockfile identity. Define staging checks, affected services, rollout batches, health metrics, thresholds, observation duration, stop criteria, owner, and recovery action before deploying. Choose thresholds from service objectives/baselines, not invented universal percentages.
+
+Record the previous deployable artifact, configuration compatibility, database/data migration reversibility, backups or restore prerequisites, and whether recovery means rollback or a forward repair. Reverting code does not undo a data migration. Rolling back to vulnerable code reopens the security work and may require mitigation.
+
+Staging/canary/production execution requires an available integration and authorization for the specific environment. If absent, finish the local patch and concrete deployment/recovery plan, with external checks pending. Never present generated commands as an installed adapter, ongoing monitoring, or an executed rollout.
+
+### 6. Observe and close
+
+After authorized deployment, collect evidence of actual artifact/version across the affected scope, including replicas, jobs, and images where applicable. Recheck advisory applicability and the business/health checks. Record observation start/end, agreed thresholds, coverage gaps, and recovery events. A successful deploy command alone does not establish observed health.
+
+Use `PATCH-STATE.json` plus [patch-plan.md](#document-61) for `PATCH-PLAN.md` and evidence references. Start from [patch-state.example.json](#document-62), replacing all synthetic values. Validate after writes with `node <skill>/scripts/validate-patch.cjs <run>/PATCH-STATE.json`. The validator checks recorded consistency, not evidence truth, authorization, live state, or file authenticity.
+
+Keep three independent dimensions: security (`pending`, `advisory_resolved`, `exploit_verified`); compatibility (`pending`, `passed`, `failed`); deployment (`not_deployed`, `staging_verified`, `deployed`, `observed`, `rolled_back`). A source change invalidates dependent review, tests, artifact identity, and current-state claims; preserve historical records in snapshots. Resume by rereading actual evidence and current source, never by trusting labels alone.
+
+Overall lifecycle is `planned`, `in_progress`, `local_verified`, `closed`, `blocked`, `deferred`, or `rolled_back`. `local_verified` requires revision-matched security evidence, compatibility checks, independent review, and a recovery plan. It does not mean deployed. `closed` additionally requires production inventory and health observation across the declared scope, no unresolved blockers, and an owner. If rolled back, preserve prior evidence, mark `rolled_back`, reopen the work and record mitigation/next action. A mixed rollout remains incomplete.
+
+Do not change the existing audit closure contract: an advisory-resolved dependency update alone cannot mark a confirmed application finding `verified` or `compounded`. That ledger still requires its own old-fail/new-pass regression and independent review. Link any existing fingerprint; keep the audit snapshot immutable. Routine maintenance can have no finding fingerprint.
+
+Use [knowledge.md](#document-20) for verified compatible-upgrade lessons and durable checks. Label their applicability and evidence limits; never turn a version-range check into a verified exploit lesson. Report tested environments, rejected candidates, observed results, missing checks, consumed attempts, and one host-correct next action. A local deliverable can satisfy a local request while production work remains explicitly open.
+
+### Learning exercises
+
+Practice with synthetic or authorized projects: (1) a direct security update with stable APIs; (2) a transitive fix requiring its parent to change; (3) a candidate that resolves an advisory but breaks valid behavior and must be rejected. Compare the evidence reports and explain each decision. Do not use example results as proof of execution.
+
+---
+
+# Document 61
+
+**Source: `skills/compound-security/assets/patch-plan.md`**
+
+## Patch plan
+
+### Goal and inventory
+- Stable patch ID; requested endpoint; scope and exclusions:
+- Source revision/dirty digest, lockfile hash, package manager/runtime:
+- Advisory and primary sources with retrieval dates; existing finding fingerprints:
+- Direct/transitive paths, workspaces, usage, services, deployed inventory or unknowns:
+- Owner, exposure, priority rationale, constraints and uncertainty:
+- Decision: patch / investigate / mitigate / defer (owner, reason, review date):
+
+### Upgrade decision
+| Candidate | Prerequisites and migrations | Support/fix evidence | Compatibility risk | Decision |
+| --- | --- | --- | --- | --- |
+
+- Ordered changes, expected lockfile diff, alternatives, mitigation if no viable fix:
+
+### Baseline and rehearsal
+| Check / business flow | Baseline evidence | Candidate evidence | Revision / environment | Result / gap |
+| --- | --- | --- | --- | --- |
+
+- Controlled runner, reproducible install, pre-existing failures:
+- Security reproduction or reason unavailable; advisory evidence is separate:
+- Independent reviewer and exact reviewed revision:
+- Rejected candidates, failures, attempts consumed and remaining budget:
+
+### Rollout and recovery
+- Artifact/source identity; staging checks; authorized integration/environment:
+- Batches, metrics, thresholds, observation duration, stop criteria and owner:
+- Previous artifact; config/data compatibility; restore/forward-repair prerequisites:
+- Rollback implications and temporary mitigation:
+
+### Deployment observation and handoff
+- Actual version/artifact across affected scope; health evidence and observation window:
+- Outstanding checks and current PATCH-STATE.json dimensions:
+- Exact next action with the current host's command prefix:
+
+---
+
+# Document 62
+
+**Source: `skills/compound-security/assets/patch-state.example.json`**
+
+````json
+{
+  "schema_version": 1,
+  "example_only": true,
+  "patch_id": "synthetic-upload-parser",
+  "scope": "Synthetic npm upload dependency in one API workspace",
+  "source_revision": "example-commit-plus-dirty-digest",
+  "status": "planned",
+  "author": "example-author",
+  "owner": null,
+  "attempts": 0,
+  "attempt_limit": 3,
+  "security": {"status": "pending", "evidence": []},
+  "compatibility": {"status": "pending", "evidence": []},
+  "review": {"status": "pending", "evidence": []},
+  "deployment": {"status": "not_deployed", "evidence": []},
+  "recovery_plan": null,
+  "blockers": [],
+  "next_action": "Establish actual dependency paths, primary advisory applicability and requested endpoint; replace all synthetic values."
+}
+````
+
+---
+
+# Document 63
+
+**Source: `skills/compound-security/scripts/validate-patch.cjs`**
+
+````text
+#!/usr/bin/env node
+'use strict';
+const fs = require('node:fs');
+const states = ['planned','in_progress','local_verified','closed','blocked','deferred','rolled_back'];
+function validate(x) {
+  const errors=[];
+  const check=(ok,msg)=>{if(!ok) errors.push(msg);};
+  const text=v=>typeof v==='string' && v.trim().length>0;
+  if (!x || typeof x!=='object' || Array.isArray(x)) return ['record must be an object'];
+  check(x.schema_version===1,'schema_version must be 1');
+  for(const key of ['patch_id','scope','source_revision','next_action']) check(text(x[key]),`${key} required`);
+  check(states.includes(x.status),'invalid status');
+  check(Array.isArray(x.blockers)&&x.blockers.every(text),'blockers must be strings');
+  check(Number.isInteger(x.attempts)&&x.attempts>=0,'attempts must be nonnegative integer');
+  check(Number.isInteger(x.attempt_limit)&&x.attempt_limit>0,'attempt_limit must be positive integer');
+  check(x.attempts<=x.attempt_limit,'attempt budget exceeded');
+  const sec=x.security||{}, comp=x.compatibility||{}, dep=x.deployment||{}, rev=x.review||{};
+  check(['pending','advisory_resolved','exploit_verified'].includes(sec.status),'invalid security status');
+  check(['pending','passed','failed'].includes(comp.status),'invalid compatibility status');
+  check(['not_deployed','staging_verified','deployed','observed','rolled_back'].includes(dep.status),'invalid deployment status');
+  const evidence=(obj,label)=>{
+    check(obj.revision===x.source_revision,`${label} stale revision`);
+    check(Array.isArray(obj.evidence)&&obj.evidence.length>0&&obj.evidence.every(text),`${label} evidence required`);
+  };
+  if(sec.status!=='pending') evidence(sec,'security');
+  if(sec.status==='exploit_verified') {
+    check(text(sec.baseline_revision)&&sec.baseline_revision!==x.source_revision,'distinct baseline required');
+    check(text(sec.baseline_failure)&&text(sec.patched_pass),'old-fail/new-pass evidence required');
+  }
+  if(['passed','failed'].includes(comp.status)) evidence(comp,'compatibility');
+  if(rev.status==='passed') {
+    evidence(rev,'review');
+    check(text(x.author)&&text(rev.reviewer)&&rev.reviewer!==x.author,'independent reviewer required');
+  } else check(rev.status==='pending','invalid review status');
+  if(dep.status!=='not_deployed'&&dep.status!=='rolled_back') {
+    evidence(dep,'deployment');
+    check(text(dep.artifact)&&text(dep.environment),'deployed artifact/environment required');
+  }
+  if(dep.status==='observed') {
+    const start=Date.parse(dep.observation_start), end=Date.parse(dep.observation_end);
+    check(Number.isFinite(start)&&Number.isFinite(end)&&end>start,'valid observation window required');
+    check(dep.coverage_complete===true&&dep.health_passed===true,'deployment coverage and health required');
+    check(text(dep.inventory_evidence)&&text(dep.health_evidence)&&text(dep.criteria),'inventory, health and criteria evidence required');
+  }
+  if(['local_verified','closed'].includes(x.status)) {
+    check(['advisory_resolved','exploit_verified'].includes(sec.status),'security evidence pending');
+    check(comp.status==='passed','compatibility must pass');
+    check(rev.status==='passed','independent review must pass');
+    check(text(x.recovery_plan),'recovery plan required');
+    check(dep.status!=='rolled_back','rolled-back patch cannot be verified or closed');
+  }
+  if(x.status==='closed') {
+    check(dep.status==='observed'&&dep.environment==='production','production observation required to close');
+    check(Array.isArray(x.blockers)&&x.blockers.length===0,'closed patch has blockers');
+    check(text(x.owner),'closure owner required');
+  }
+  if(x.status==='rolled_back'||dep.status==='rolled_back') {
+    check(x.status==='rolled_back'&&dep.status==='rolled_back','rollback dimensions must agree');
+    check(text(dep.rollback_evidence),'rollback evidence required');
+  }
+  if(x.status==='blocked') check(Array.isArray(x.blockers)&&x.blockers.length>0,'blocked requires blocker');
+  if(x.status==='deferred') {
+    check(text(x.owner)&&text(x.defer_reason),'deferral owner/reason required');
+    check(text(x.review_date)&&Number.isFinite(Date.parse(x.review_date)),'deferral review date required');
+  }
+  return errors;
+}
+module.exports={validate};
+if(require.main===module) {
+  try {
+    if(process.argv.length!==3) throw Error('Usage: node validate-patch.cjs PATCH-STATE.json');
+    const errors=validate(JSON.parse(fs.readFileSync(process.argv[2],'utf8')));
+    if(errors.length) throw Error(errors.join('\n'));
+    console.log('Patch record consistent. Recorded assertions are not proof of execution or authorization.');
+  } catch(e) {console.error(e.message);process.exitCode=1;}
+}
+````
+
+---
+
+# Document 64
+
+**Source: `skills/compound-security/scripts/validate-patch.test.cjs`**
+
+````text
+'use strict';
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const {validate}=require('./validate-patch.cjs');
+const example=require('../assets/patch-state.example.json');
+const fresh=()=>structuredClone(example);
+function local(){
+ const x=fresh();x.status='local_verified';x.attempts=1;x.recovery_plan='recovery.md';
+ x.security={status:'advisory_resolved',revision:x.source_revision,evidence:['advisory-and-lockfile.md']};
+ x.compatibility={status:'passed',revision:x.source_revision,evidence:['business-tests.log']};
+ x.review={status:'passed',revision:x.source_revision,reviewer:'independent-context',evidence:['review.md']};
+ return x;
+}
+function closed(){
+ const x=local();x.status='closed';x.owner='service-owner';
+ x.deployment={status:'observed',revision:x.source_revision,artifact:'sha256:example',environment:'production',evidence:['deploy.log'],observation_start:'2026-01-01T00:00:00Z',observation_end:'2026-01-01T01:00:00Z',coverage_complete:true,health_passed:true,inventory_evidence:'inventory.json',health_evidence:'health.json',criteria:'agreed service health thresholds'};
+ return x;
+}
+test('planned record is incomplete but consistent',()=>assert.deepEqual(validate(fresh()),[]));
+test('local verification does not require production',()=>assert.deepEqual(validate(local()),[]));
+test('observed production may close',()=>assert.deepEqual(validate(closed()),[]));
+const cases={
+ 'local tests cannot close production':x=>{x.status='closed';},
+ 'compatibility regression rejects candidate':x=>{x.compatibility.status='failed';},
+ 'missing reviewer':x=>{x.review.status='pending';},
+ 'self review':x=>{x.review.reviewer=x.author;},
+ 'stale revision':x=>{x.source_revision='changed';},
+ 'missing security evidence':x=>{x.security.evidence=[];},
+ 'security pending':x=>{x.security.status='pending';},
+ 'exploit claim without reproduction':x=>{x.security.status='exploit_verified';},
+ 'missing recovery':x=>{x.recovery_plan=null;},
+ 'budget exhausted':x=>{x.attempts=4;},
+ 'invalid state':x=>{x.status='done';},
+ 'rollback cannot stay verified':x=>{x.deployment.status='rolled_back';}
+};
+for(const [name,mutate] of Object.entries(cases)) test(name,()=>{const x=local();mutate(x);assert.ok(validate(x).length);});
+for(const [name,mutate] of Object.entries({
+ 'staging is not production':x=>{x.deployment.environment='staging';},
+ 'missing replica coverage':x=>{x.deployment.coverage_complete=false;},
+ 'unhealthy deployment':x=>{x.deployment.health_passed=false;},
+ 'reversed observation':x=>{x.deployment.observation_end='2025-01-01';},
+ 'remaining blocker':x=>{x.blockers=['one replica unknown'];},
+ 'missing owner':x=>{x.owner=null;},
+ 'missing inventory':x=>{delete x.deployment.inventory_evidence;}
+})) test(name,()=>{const x=closed();mutate(x);assert.ok(validate(x).length);});
+test('rollback reopens lifecycle with retained evidence',()=>{const x=closed();x.status='rolled_back';x.deployment.status='rolled_back';x.deployment.rollback_evidence='rollback.log';assert.deepEqual(validate(x),[]);});
+test('deferral needs owner reason and review date',()=>{const x=fresh();x.status='deferred';assert.ok(validate(x).length);x.owner='owner';x.defer_reason='blocked upstream';x.review_date='2026-12-01';assert.deepEqual(validate(x),[]);});
+test('malformed records rejected',()=>{for(const x of [null,[],1,{},'x'])assert.ok(validate(x).length);});
+````

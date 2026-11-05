@@ -32,3 +32,11 @@ These are behavioral exercises on synthetic inputs, not evidence of end-to-end r
 Independent package review of the prior version led to hardened closure input handling and full lesson-destination containment instructions. The bundled validators test recorded assertions; they do not authenticate agents, prove evidence, enforce an OS sandbox, or prove absence of vulnerabilities.
 
 Claude Code and Codex CLIs were unavailable in this authoring environment. Their native loading/install flows have not been smoke-tested. Manifests follow the inspected upstream layout; verify loading in the intended host before team rollout. No production target, scanner backend, remote API, deployment, or live exploit test was used.
+
+## Patch lifecycle (v0.3.0)
+
+Run `node --test skills/compound-security/scripts/validate-patch.test.cjs` and validate the synthetic shape with `node skills/compound-security/scripts/validate-patch.cjs skills/compound-security/assets/patch-state.example.json`.
+
+The patch suite rejects stale revisions, self-review, missing evidence, compatibility failures, production closure based only on local/staging results, incomplete inventory/health observations, and inconsistent rollback. Assertions in a record remain claims; validators do not execute tests, authenticate reviewers, or inspect production.
+
+Behavioral exercises should include a direct update, a transitive parent upgrade, and a security-resolving candidate that breaks legitimate behavior. Verify help/brainstorm route dependency work to patch, plan-only remains read-only, LFG resumes within budget, and continuation commands retain the host namespace. Real npm/pnpm rehearsal requires the controlled runner; no native host or production integration is supplied here.

@@ -4,9 +4,9 @@ Built by **[Offense Research, Inc.](https://offenseresearch.com/)**. Want our te
 
 Find a vulnerability, repair its cause, prove the fix, and retain the lesson so the next review starts with better security knowledge.
 
-Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.2.1 provides ten focused entry points and native Claude Code and Codex manifests.
+Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.3.0 provides eleven focused entry points and native Claude Code and Codex manifests.
 
-For all ten workflows, examples, and record formats, read the [full documentation](docs/Full-Documentation.md).
+For all eleven workflows, examples, and record formats, read the [full documentation](docs/Full-Documentation.md).
 
 ## Start here
 
@@ -36,6 +36,7 @@ Each is a separate invocation. Help gives guidance without creating a run. Brain
 | `cs-help` | Explain useful starting points and recommend one next command |
 | `cs-brainstorm` | Turn a concern or goal into grounded options and a security brief |
 | `cs-lfg` | Choose or resume the route from current work, completing feasible local stages with bounded retries |
+| `cs-patch` | Plan and rehearse dependency upgrades, then track rollout and recovery evidence |
 | `cs-audit` | Inspect scoped code and report evidence-backed findings |
 | `cs-plan` | Turn findings and prior lessons into a remediation plan |
 | `cs-fix` | Apply selected local fixes within the authorized scope |
@@ -68,6 +69,24 @@ $compound-security:cs-status summarize the latest run
 The core [SKILL.md](skills/compound-security/SKILL.md) defines each mode, its prerequisites, and the artifact contract. Wrappers delegate to that same core rather than maintaining separate methodologies.
 
 If only the standalone core skill is installed, use `$compound-security help`, `$compound-security brainstorm`, or `$compound-security lfg` with the same request. The short `$compound-security:cs-*` entry points belong to the plugin package.
+
+## Patch a dependency
+
+Start with one npm/pnpm package, advisory, or existing upgrade PR. In the Codex prompt:
+
+```text
+$compound-security:cs-patch Upgrade the vulnerable dependency in this workspace. Produce a tested local patch, compatibility evidence, and a rollout/recovery plan. Do not deploy.
+```
+
+In Claude Code use `/compound-security:cs-patch` with the same request. For the standalone core use `$compound-security patch`.
+
+The workflow inventories affected dependency paths, verifies primary advisory ranges, compares supported upgrade paths, records a baseline, rehearses the change, obtains independent review, and prepares recovery. Help and brainstorm now offer patching as a starting point; LFG can resume it. Existing plan/fix/verify/status/compound modes use the same lifecycle.
+
+`PATCH-PLAN.md` records decisions and evidence; `PATCH-STATE.json` separates security, compatibility, and deployment status. A locally verified patch is not marked deployed. Production closure requires observed artifact/version coverage and health checks. A rollback reopens the work. Advisory resolution alone does not prove an application exploit or satisfy the existing audit closure contract.
+
+This release supplies the workflow and record validation. It does **not** include deployment adapters, a sandbox, scanners, or continuous monitoring. Without those integrations, it delivers the feasible local work and an explicit handoff. Other package ecosystems and infrastructure need additional ecosystem-specific guidance.
+
+Practice on three cases: a direct update, a transitive dependency needing a parent upgrade, and an upgrade that fixes the advisory but fails legitimate behavior checks. Keep failed candidates as evidence.
 
 ## LFG and run
 
@@ -129,7 +148,7 @@ Local marketplace installation uses a cached copy; edits to this source director
 
 ### Update an existing Codex installation
 
-Version 0.2.1 preserves the plugin prefix in follow-up commands and brief artifacts. If an existing installation still suggests bare entry-point names, refresh its marketplace and installed copy:
+Version 0.3.0 adds dependency patching and preserves the plugin prefix in follow-up commands and brief artifacts. If an existing installation still suggests bare entry-point names, refresh its marketplace and installed copy:
 
 ```bash
 codex plugin marketplace upgrade compound-security-plugin
@@ -161,7 +180,7 @@ Requires Node.js 18+ for the artifact validators/tests and Python 3.9+ for the s
 
 ```bash
 python3 scripts/validate_plugin.py
-node --test skills/compound-security/references/audit/validate-findings.test.cjs skills/compound-security/references/audit/validate-coverage-ledger.test.cjs skills/compound-security/scripts/validate-closure.test.cjs
+node --test skills/compound-security/references/audit/validate-findings.test.cjs skills/compound-security/references/audit/validate-coverage-ledger.test.cjs skills/compound-security/scripts/validate-closure.test.cjs skills/compound-security/scripts/validate-patch.test.cjs
 ```
 
 This checks manifest consistency, the core and wrapper layout, relative wrapper links, and provenance notices. It does not execute target code or prove that Claude Code or Codex can load the plugin. Follow the core's own artifact validation and verification instructions during actual reviews.

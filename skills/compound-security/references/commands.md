@@ -18,7 +18,7 @@ Read this before recommending a next stage, resumption, or alternative command i
 | Claude Code plugin | `/compound-security:cs-brainstorm <scope>` | `/compound-security:cs-audit Use <brief-path>. <scope>` |
 | Codex standalone core | `$compound-security brainstorm <scope>` | `$compound-security audit Use <brief-path>. <scope>` |
 
-Use the same rule for plan, fix, verify, compound, run, lfg, and status. Fill in actual paths and scope. Commands containing `$` are entered into the coding agent's prompt, not executed by a shell.
+Use the same rule for patch, plan, fix, verify, compound, run, lfg, and status. Fill in actual paths and scope. Commands containing `$` are entered into the coding agent's prompt, not executed by a shell.
 
 ## Check every outgoing command
 

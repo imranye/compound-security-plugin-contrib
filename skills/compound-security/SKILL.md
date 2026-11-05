@@ -1,6 +1,6 @@
 ---
 name: compound-security
-description: Help people choose a useful security task, brainstorm priorities, audit source code, fix independently verified findings, and retain reusable security knowledge. Use for security onboarding, uncertainty about where to start, security brainstorming, repository audits, remediation, regression reviews, verified lessons, or an autonomous security LFG. Support help, brainstorm, lfg, audit, plan, fix, verify, compound, run, and status modes; help and brainstorming do not authorize an audit or source changes.
+description: Help people choose a useful security task, brainstorm priorities, audit source code, fix independently verified findings, and retain reusable security knowledge. Use for security onboarding, uncertainty about where to start, security brainstorming, repository audits, remediation, regression reviews, verified lessons, or an autonomous security LFG. Support patch (dependency upgrades and rollout evidence), help, brainstorm, lfg, audit, plan, fix, verify, compound, run, and status modes; help and brainstorming do not authorize an audit or source changes.
 ---
 
 # Compound Security
@@ -17,6 +17,7 @@ Preserve two independent truths: whether a vulnerability was established at an a
 | `help` | One recommended starting point with a ready-to-use command | Read-only; no run artifacts |
 | `brainstorm` | Evidence-grounded options and a scoped security brief | Brief only; no product edits or automatic audit |
 | `lfg` | Route from a goal or existing work, complete missing stages, resume with bounded retries | Requested local work and private checkpoints; disclose blockers |
+| `patch` | Dependency inventory, upgrade plan, local rehearsal, and explicit rollout evidence | Scoped local repairs and private patch records; external actions require authorization |
 | `audit` | Six-phase audit and coverage report | Audit artifacts only; target source read-only |
 | `plan` | Plan linked to confirmed findings | Plan and closure ledger only |
 | `fix` | Requested fixes and regression tests | Authorized local source/test changes; verification follows |
@@ -38,6 +39,7 @@ Dispatch before creating a run or starting an audit:
 - **Help:** read [help.md](references/help.md), explain the most useful next action in the user's terms, then stop. Do not create directories or launch scans merely to recommend a command.
 - **Brainstorm:** read [brainstorm.md](references/brainstorm.md), inspect only enough context to suggest grounded options, and produce the requested brief using [security-brief.md](assets/security-brief.md). Do not turn questions into unproven findings or execute the recommended handoff.
 - **LFG:** read [lfg.md](references/lfg.md), establish the goal and current artifacts, then orchestrate only the missing stages below. Preserve the user’s restrictions, checkpoint progress, and honor retry/agent budgets. The [checkpoint example](assets/lfg-state.example.json) is a synthetic format illustration, not execution evidence or permission.
+- **Patch:** read [patching.md](references/patching.md) and follow its dependency lifecycle. Route package upgrades and existing upgrade PRs here; preserve any plan-only restriction. Keep advisory applicability, application exploit proof, and deployment status separate.
 - **Other modes:** run only the requested stage and its required prerequisites. `run` requests the full pipeline; `lfg` chooses and resumes a route based on current evidence. Neither needs repetitive approval for already requested local work.
 
 For command suggestions, use `/compound-security:cs-<mode>` in Claude Code, `$compound-security:cs-<mode>` when plugin entry points are installed in Codex, or `$compound-security <mode>` when only the core is installed. Do not assume the short entry skills are installed just because the core is available.
@@ -83,11 +85,13 @@ Read [remediation.md](references/remediation.md) and [closure-contract.md](refer
 
 For every confirmed finding identify the violated invariant, narrowest reliable change, sibling paths, defect regression, legitimate behavior tests, compatibility, rollback, and external conditions. Prioritize demonstrated impact/prerequisites and group shared root causes. Keep `needs_validation` in a separate validation queue. Hardening advice is not a confirmed vulnerability.
 
+For npm/pnpm dependency work in plan, fix, verify, compound, or status, also read [patching.md](references/patching.md) and use its patch records without weakening the existing finding closure gates. Other ecosystems may use the general lifecycle but require ecosystem-specific primary documentation and explicit capability gaps.
+
 For dependency/infra work, map compatibility and upgrade order before editing. A repository test cannot establish deployed IAM policy or rollout health. Preserve unresolved deployment checks.
 
 ## 4. Fix within scope
 
-`fix`, `run`, and `lfg` authorize the requested local repair within the user's restrictions. Implement the smallest coherent patch plus an invariant-based regression. Coordinate disjoint writes when delegating. Use existing tooling; never install or execute target-controlled software outside the required execution controls.
+`patch`, `fix`, `run`, and `lfg` authorize the requested local repair within the user's restrictions. Implement the smallest coherent patch plus an invariant-based regression. Coordinate disjoint writes when delegating. Use existing tooling; never install or execute target-controlled software outside the required execution controls.
 
 Record author, changed files, baseline revision, and patched revision/digest. Require the regression to fail for the security reason on baseline and pass after the patch. Setup/compilation failures do not count. Verify legitimate behavior still works; remove unrelated refactoring. Unexecuted patches remain `fixed_unverified`.
 
@@ -117,6 +121,7 @@ For `status`, inspect current source and linked artifacts, identify stale verifi
 
 ## Resource map
 
+- [patching.md](references/patching.md): dependency upgrade lifecycle, rehearsal, recovery, and deployment evidence.
 - [help.md](references/help.md): problem-first discovery and exact next-command recommendations.
 - [brainstorm.md](references/brainstorm.md): concrete options and a scoped security brief.
 - [lfg.md](references/lfg.md): autonomous routing, checkpoints, bounded retries, and resumption.

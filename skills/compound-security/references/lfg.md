@@ -16,6 +16,7 @@ Treat “LFG” as permission to perform the requested local work, including sco
 | No target or useful context | Use `help` to identify one concrete entry point; report the exact missing target rather than running a generic audit |
 | Vague goal with materially different interpretations | Use the [brainstorm workflow](brainstorm.md) to choose a bounded goal; continue once the choice is settled because LFG already requests execution |
 | Security brief or scoped concern, no verified findings | Audit that scope; do not treat a brainstorm hypothesis as confirmed |
+| Dependency upgrade, package advisory, upgrade PR, or patch checkpoint | Follow [patching.md](patching.md); establish applicability and resume missing patch stages, retaining separate security/compatibility/deployment state |
 | Scanner alert or unvalidated candidate | Establish current source trace and independent candidate validation through the audit engine; keep unknown runtime/deployment facts blocked |
 | Current confirmed finding or verified audit | Plan the linked fix and its regression, retaining the original audit baseline |
 | Remediation plan linked to current confirmed findings | Check readiness and proceed to local fixes |
@@ -26,6 +27,8 @@ Treat “LFG” as permission to perform the requested local work, including sco
 Do not require a separate brainstorm when the goal is already clear. A plan is ready when it identifies confirmed fingerprints, enforced invariant, minimal changes, baseline/patched regression, legitimate-use checks, compatibility, rollback, and unresolved external conditions. Fill missing plan details locally. Keep non-confirmed candidates in a separate validation queue.
 
 ## Run the selected stages
+
+For dependency patch work, use the stages and completion rules in [patching.md](patching.md), the same execution gates and bounded retry policy, and `PATCH-STATE.json` alongside this checkpoint. A requested local upgrade can finish at `local_verified`; production remains open until observed. Do not require a fabricated audit finding for routine maintenance.
 
 Keep a visible short stage list: `recall`, `audit/validate`, `plan`, `fix`, `verify`, `compound`, `report`. Mark a stage complete only after its actual result exists and its checks pass. Record inapplicable stages as skipped with a reason, such as “audit-only request” or “no confirmed finding to fix.” A child agent finishing a stage returns control to this driver; continue to the next authorized stage in the same task.
 

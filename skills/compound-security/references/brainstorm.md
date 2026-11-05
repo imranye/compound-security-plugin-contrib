@@ -53,8 +53,10 @@ The brief must state:
 - Required security property and concrete done conditions, including legitimate behavior.
 - Alternatives considered and reason for the selected or proposed direction.
 - Existing authorization, access, execution capability, budget/deadline, and constraints.
-- Missing facts and whether the brief is `ready_for_audit`, `ready_for_plan`, or `needs_input`.
+- Missing facts and whether the brief is `ready_for_audit`, `ready_for_plan`, `ready_for_patch`, or `needs_input`.
 - One recommended next command carrying the brief path and scope.
+
+For `ready_for_patch`, require a bounded dependency target and requested endpoint, not a confirmed exploit. Recommend `patch` to establish applicability and plan a compatible upgrade; the brief itself authorizes no changes.
 
 For `ready_for_plan`, require current confirmed findings and enough context for remediation planning. Unconfirmed concerns and scanner alerts route to scoped `audit`. A good audit brief can be ready while documenting runtime constraints; those constraints limit confirmation later and do not justify inventing results now. Materially unknown goals, targets, or scope remain `needs_input`.
 
@@ -64,6 +66,7 @@ Keep implementation details out of the brief unless they are real constraints. A
 
 Read [commands.md](commands.md) and render one next command with the invoking host's registered prefix. Use that exact string in the brief's Next action and final response. Read the saved command back and check the namespace, selected mode, actual brief path, and scope before finishing. Return the selected or proposed task, why it fits, the brief path, and that command. Include the explicit scope rather than “secure everything.”
 
+- For a bounded dependency upgrade, recommend `patch` with the brief path and explicit endpoint.
 - For an unconfirmed concern, recommend `audit` to establish evidence.
 - For current confirmed findings, recommend `plan` to define remediation.
 - If the user wants to hand off the remaining authorized work, offer `lfg` with the brief path and its scope. State that it can perform local fixes after confirmation; it does not authorize production changes.

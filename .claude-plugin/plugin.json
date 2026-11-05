@@ -1,7 +1,7 @@
 {
   "name": "compound-security",
-  "version": "0.2.1",
-  "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
+  "version": "0.3.0",
+  "description": "Audit, patch, rehearse dependency upgrades, and track verified fixes through rollout and reusable prevention.",
   "author": {
     "name": "Offense Research, Inc."
   },

@@ -1,7 +1,7 @@
 {
   "name": "compound-security",
-  "version": "0.2.1",
-  "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
+  "version": "0.3.0",
+  "description": "Audit, patch, rehearse dependency upgrades, and track verified fixes through rollout and reusable prevention.",
   "author": {
     "name": "Offense Research, Inc."
   },
@@ -16,7 +16,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Compound Security",
-    "shortDescription": "Choose, audit, fix, and verify security work.",
+    "shortDescription": "Audit, patch, rehearse, and verify security work.",
     "longDescription": "Get a useful security starting point, brainstorm a scoped goal, and let LFG carry local audit, remediation, independent verification, and reusable prevention forward.",
     "developerName": "Offense Research, Inc.",
     "category": "Coding",
@@ -28,7 +28,8 @@
     "defaultPrompt": [
       "Help me choose a security starting point for this project",
       "Brainstorm the highest-value security work before launch",
-      "LFG: take this security goal through verified local fixes and prevention"
+      "LFG: take this security goal through verified local fixes and prevention",
+      "Patch a vulnerable dependency with compatibility evidence and a recovery plan"
     ]
   }
 }
