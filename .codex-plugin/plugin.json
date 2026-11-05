@@ -1,9 +1,9 @@
 {
   "name": "compound-security",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
   "author": {
-    "name": "Offense Research"
+    "name": "Offense Research, Inc."
   },
   "license": "Apache-2.0",
   "keywords": [
@@ -18,7 +18,7 @@
     "displayName": "Compound Security",
     "shortDescription": "Choose, audit, fix, and verify security work.",
     "longDescription": "Get a useful security starting point, brainstorm a scoped goal, and let LFG carry local audit, remediation, independent verification, and reusable prevention forward.",
-    "developerName": "Offense Research",
+    "developerName": "Offense Research, Inc.",
     "category": "Coding",
     "capabilities": [
       "Interactive",

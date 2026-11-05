@@ -35,6 +35,7 @@
 ## Next action
 
 - Recommended mode:
-- Host-correct command with this brief's path and scope:
+- Host / registered command prefix (from the active invocation or host registry):
+- Verified next command with this brief's path and scope (use the same string in the final response):
 - Conditions that must be resolved before execution:
 - Handoff authorization: recommendation only, or the exact existing request authorizing continuation.

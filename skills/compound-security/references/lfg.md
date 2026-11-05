@@ -58,6 +58,8 @@ On resume, first re-read the user's current restrictions, current source, actual
 
 ## Finish with a usable handoff
 
+Read [commands.md](commands.md) before emitting a continuation or resume command. Re-render stale checkpoint commands for the current host and validate the namespace, mode, path, and scope.
+
 Report the requested outcome and what is ready locally, with source/patch/test paths. Then list unresolved findings, unverified changes, blocked checks, attempts consumed, and the exact next action or prerequisite. Link the audit, plan, closure ledger, prevention/lesson, and checkpoint when they exist.
 
 Use `completed` only when the requested result has actually been delivered: for an audit-only request, complete audit artifacts and truthful coverage; for requested repairs, independently verified selected fixes and a completed compounding decision. Report any residual uncertainty even when a narrower requested task is complete. Use `partial` when useful work is ready but a requested goal remains blocked or unverified, and `blocked` when no substantive requested result could be produced. A complete audit with no confirmed findings may legitimately produce no patches; never invent a fix or claim the target is secure.

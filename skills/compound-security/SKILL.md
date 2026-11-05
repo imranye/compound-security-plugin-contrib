@@ -31,6 +31,8 @@ No mode implicitly authorizes production changes, vulnerability publication, mes
 
 ## Start at the right entry point
 
+Read [commands.md](references/commands.md) first and retain the calling wrapper's registered command identity. Apply its outgoing-command check to every response and saved handoff.
+
 Dispatch before creating a run or starting an audit:
 
 - **Help:** read [help.md](references/help.md), explain the most useful next action in the user's terms, then stop. Do not create directories or launch scans merely to recommend a command.

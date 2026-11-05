@@ -1,9 +1,9 @@
 {
   "name": "compound-security",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
   "author": {
-    "name": "Offense Research"
+    "name": "Offense Research, Inc."
   },
   "license": "Apache-2.0",
   "keywords": [

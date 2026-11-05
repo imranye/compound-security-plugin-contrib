@@ -5,6 +5,8 @@ description: Implement the selected security remediation plan locally and preser
 
 # Compound Security: fix
 
+Before loading the core, read [command routing](../compound-security/references/commands.md). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
+
 Read the sibling [Compound Security core](../compound-security/SKILL.md) and execute its `fix` mode. Resolve that path relative to this file, never relative to the target repository.
 
 Pass through the user's scope, findings, run path, constraints, and arguments. This entry point selects `fix`; it does not expand authorization or override an explicit user restriction. Follow the core's prerequisites, evidence gates, execution boundaries, and completion contract. If an argument conflicts with this mode, follow the user's explicit requested outcome and state the selected mode.

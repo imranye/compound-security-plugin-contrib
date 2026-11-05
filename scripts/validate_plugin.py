@@ -55,7 +55,7 @@ def validate(root):
         "LICENSE", "agents/openai.yaml", "references/EVERY-LICENSE.txt",
         "references/execution.md", "references/remediation.md", "references/knowledge.md",
         "references/reviewer-prompts.md", "references/closure-contract.md", "references/synthesis.md",
-        "references/help.md", "references/brainstorm.md", "references/lfg.md",
+        "references/help.md", "references/brainstorm.md", "references/lfg.md", "references/commands.md",
         "assets/security-brief.md", "assets/lfg-state.example.json",
         "assets/remediation-plan.md", "assets/security-lesson.md", "assets/closure.example.json",
         "scripts/validate-closure.cjs", "scripts/validate-closure.test.cjs",
@@ -96,7 +96,18 @@ def validate(root):
             mode = name[3:]
             check("../compound-security/SKILL.md" in body, f"{name}: missing core link")
             check(f"`{mode}` mode" in body, f"{name}: wrong delegated mode")
+            check("../compound-security/references/commands.md" in body, f"{name}: missing command routing")
             check(len(body.splitlines()) < 30, f"{name}: wrapper should remain thin")
+
+    # Guard copyable examples against dropping the plugin namespace.
+    documents = [root / "README.md", root / "docs/Full-Documentation.md"]
+    documents.extend(core_root.rglob("*.md"))
+    for document in documents:
+        if document.is_relative_to(core_root / "references/audit"):
+            continue
+        content = document.read_text(encoding="utf-8")
+        check(not re.search(r"(?<![\w:])[$/]cs-[a-z]+", content),
+              f"{document.relative_to(root)}: unqualified plugin command")
 
     sources = read_json("sources.lock.json").get("sources", [])
     check(isinstance(sources, list) and len(sources) == 2, "Expected two pinned upstream sources")

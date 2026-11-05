@@ -1,6 +1,6 @@
 # Third-party notices
 
-Copyright 2026 Offense Research. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices.
+Copyright 2026 Offense Research, Inc. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices.
 
 Compound Security synthesizes and adapts ideas and workflow structure from these MIT-licensed projects. It is an independent Offense Research package; it is not an official Cloudflare or Every product.
 

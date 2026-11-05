@@ -38,7 +38,7 @@ Use the current project and concern in the command. Examples of meaningful scope
 
 These examples suggest questions to investigate; they do not assert vulnerabilities. For a novice, describe the outcome before terms such as SSRF, IAM, or CWE.
 
-Render exactly one syntax for the installed host:
+Read [commands.md](commands.md), preserve the invocation that loaded this mode, and validate the outgoing command before responding. Render exactly one syntax for the installed host:
 
 | Installation | Invocation form |
 | --- | --- |
