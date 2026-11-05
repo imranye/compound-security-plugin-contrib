@@ -1,4 +1,15 @@
-# Validation record — v0.2.0
+# Validation record — v0.2.1
+
+Validated November 5, 2026.
+
+- A fresh plugin exercise followed help into brainstorm. The help response used the full Codex plugin name, and both the saved brief and final response contained the same qualified audit command. The README-only fixture correctly remained needs_input pending implementation source.
+- A separate fresh standalone exercise recommended the standalone core command and created no artifacts.
+- The package validator passed. Negative checks rejected bare follow-up commands in a mode reference and the full manual, and rejected a wrapper missing the shared command-routing reference.
+- Host manifests and marketplace metadata use 0.2.1 to distinguish this revision from cached 0.2.0 installations.
+
+These exercises cover agent-authored handoffs. Native Codex CLI installation and cache refresh on the user's machine still need user-side confirmation. The validator scans authored examples and routing references; live generated text also requires the outgoing-command check in the skill instructions.
+
+## Previous validation — v0.2.0
 
 Validated November 4, 2026, with Node.js v24.22.1 and the available Python 3 runtime.
 

@@ -1,8 +1,10 @@
 # Compound Security
 
+Built by **[Offense Research, Inc.](https://offenseresearch.com/)**. Want our team to handle the audit, fixes, and security automation? [Work with Offense Research](https://offenseresearch.com/).
+
 Find a vulnerability, repair its cause, prove the fix, and retain the lesson so the next review starts with better security knowledge.
 
-Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.2.0 provides ten focused entry points and native Claude Code and Codex manifests.
+Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.2.1 provides ten focused entry points and native Claude Code and Codex manifests.
 
 For all ten workflows, examples, and record formats, read the [full documentation](docs/Full-Documentation.md).
 
@@ -125,6 +127,18 @@ codex plugin add compound-security@compound-security-plugin
 
 Local marketplace installation uses a cached copy; edits to this source directory may require reinstalling. Use a new session after installation if skills are not immediately visible. The manifests follow the native Codex layout present in the inspected Every revision; actual host loading must be checked with the installed CLI version.
 
+### Update an existing Codex installation
+
+Version 0.2.1 preserves the plugin prefix in follow-up commands and brief artifacts. If an existing installation still suggests bare entry-point names, refresh its marketplace and installed copy:
+
+```bash
+codex plugin marketplace upgrade compound-security-plugin
+codex plugin add compound-security@compound-security-plugin
+codex plugin list
+```
+
+Open a new session in your coding client so it discovers the updated skills. Type `$compound-security:cs-help` into the Codex prompt. If the problem persists, include the output of `codex --version` and `codex plugin list` when reporting it.
+
 ### Portable skill
 
 An Agent Skills-compatible host can load `skills/compound-security/` directly. If importing the `cs-*` entry points too, preserve the sibling layout under `skills/`. The core works without the wrappers. Multi-agent hosts can delegate specialist passes; a host without delegation must disclose reduced independence.
@@ -162,6 +176,17 @@ Keep raw audit artifacts outside tracked source. `findings.json` and `coverage-l
 
 The complete shape reference is [closure.example.json](skills/compound-security/assets/closure.example.json), with fictional data clearly identified by [the contract](skills/compound-security/references/closure-contract.md). Never use example results as execution evidence.
 
+## Work with Offense Research
+
+We do this work as a service. **[Offense Research, Inc.](https://offenseresearch.com/)** helps teams audit their systems, implement fixes, and set up agents that keep security work moving.
+
+- **Code and infrastructure audits** to identify exposed boundaries, verify findings, and prioritize the work.
+- **Dependency and infrastructure upgrades** with compatibility planning, testing, and a clear rollout path.
+- **Security remediation** with regression tests and verification of the fixes.
+- **Security agents and CI workflows** that turn repeatable checks and upgrade work into part of your development process.
+
+Bring us a repository, an upgrade backlog, or a security concern. We'll help scope the work and carry it through. [Talk to Offense Research, Inc.](https://offenseresearch.com/)
+
 ## Attribution
 
-Copyright 2026 Offense Research. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices. See [LICENSE](LICENSE), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), and [sources.lock.json](sources.lock.json) for retained notices and exact upstream revisions.
+Copyright 2026 Offense Research, Inc. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices. See [LICENSE](LICENSE), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), and [sources.lock.json](sources.lock.json) for retained notices and exact upstream revisions.

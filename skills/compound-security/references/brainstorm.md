@@ -62,7 +62,7 @@ Keep implementation details out of the brief unless they are real constraints. A
 
 ## 4. Hand off clearly
 
-Return the selected or proposed task, why it fits, the brief path when written, and one host-correct command using [help.md](help.md)'s syntax rules. Include the explicit scope rather than “secure everything.”
+Read [commands.md](commands.md) and render one next command with the invoking host's registered prefix. Use that exact string in the brief's Next action and final response. Read the saved command back and check the namespace, selected mode, actual brief path, and scope before finishing. Return the selected or proposed task, why it fits, the brief path, and that command. Include the explicit scope rather than “secure everything.”
 
 - For an unconfirmed concern, recommend `audit` to establish evidence.
 - For current confirmed findings, recommend `plan` to define remediation.

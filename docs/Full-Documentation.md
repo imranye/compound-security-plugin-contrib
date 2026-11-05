@@ -1,6 +1,8 @@
-# Compound Security v0.2.0 — Full Documentation
+# Compound Security v0.2.1 — Full Documentation
 
-This manual contains every Markdown documentation file in the v0.2.0 package, followed by manifests, schemas, example records, metadata, and licenses. Documentation is reproduced in full; headings and internal links are adjusted for this single-document format. Executable validators and the package checker are available in the plugin bundle.
+Built by **[Offense Research, Inc.](https://offenseresearch.com/)**. We offer code and infrastructure audits, tested patches and upgrades, and security agent implementation as a service. [Work with our team](https://offenseresearch.com/).
+
+This manual contains every Markdown documentation file in the v0.2.1 package, followed by manifests, schemas, example records, metadata, and licenses. Documentation is reproduced in full; headings and internal links are adjusted for this single-document format. Executable validators and the package checker are available in the plugin bundle.
 
 **Start here:** use help to choose a starting point, brainstorm to turn a concern into a scoped brief, and LFG to carry a goal or existing work through the remaining authorized local stages. All three are available through the core skill; the plugin also supplies `cs-help`, `cs-brainstorm`, and `cs-lfg`.
 
@@ -70,6 +72,8 @@ See the [repository README](../README.md) for installation and quick-start comma
 56. [report-schema.json](#document-56) — `skills/compound-security/references/audit/report-schema.json`
 57. [sources.lock.json](#document-57) — `sources.lock.json`
 
+58. [Command routing](#document-58) — `skills/compound-security/references/commands.md`
+
 ---
 
 # Document 01
@@ -78,9 +82,13 @@ See the [repository README](../README.md) for installation and quick-start comma
 
 ## Compound Security
 
+Built by **[Offense Research, Inc.](https://offenseresearch.com/)**. Want our team to handle the audit, fixes, and security automation? [Work with Offense Research](https://offenseresearch.com/).
+
 Find a vulnerability, repair its cause, prove the fix, and retain the lesson so the next review starts with better security knowledge.
 
-Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.2.0 provides ten focused entry points and native Claude Code and Codex manifests.
+Compound Security combines [Cloudflare's source-grounded security audit](https://github.com/cloudflare/security-audit-skill) with [Every's compound engineering loop](https://github.com/EveryInc/compound-engineering-plugin). The reusable core is one portable skill; version 0.2.1 provides ten focused entry points and native Claude Code and Codex manifests.
+
+For all ten workflows, examples, and record formats, read the [full documentation](#contents).
 
 ### Start here
 
@@ -201,6 +209,18 @@ codex plugin add compound-security@compound-security-plugin
 
 Local marketplace installation uses a cached copy; edits to this source directory may require reinstalling. Use a new session after installation if skills are not immediately visible. The manifests follow the native Codex layout present in the inspected Every revision; actual host loading must be checked with the installed CLI version.
 
+#### Update an existing Codex installation
+
+Version 0.2.1 preserves the plugin prefix in follow-up commands and brief artifacts. If an existing installation still suggests bare entry-point names, refresh its marketplace and installed copy:
+
+```bash
+codex plugin marketplace upgrade compound-security-plugin
+codex plugin add compound-security@compound-security-plugin
+codex plugin list
+```
+
+Open a new session in your coding client so it discovers the updated skills. Type `$compound-security:cs-help` into the Codex prompt. If the problem persists, include the output of `codex --version` and `codex plugin list` when reporting it.
+
 #### Portable skill
 
 An Agent Skills-compatible host can load `skills/compound-security/` directly. If importing the `cs-*` entry points too, preserve the sibling layout under `skills/`. The core works without the wrappers. Multi-agent hosts can delegate specialist passes; a host without delegation must disclose reduced independence.
@@ -238,9 +258,20 @@ Keep raw audit artifacts outside tracked source. `findings.json` and `coverage-l
 
 The complete shape reference is [closure.example.json](#document-52), with fictional data clearly identified by [the contract](#document-21). Never use example results as execution evidence.
 
+### Work with Offense Research
+
+We do this work as a service. **[Offense Research, Inc.](https://offenseresearch.com/)** helps teams audit their systems, implement fixes, and set up agents that keep security work moving.
+
+- **Code and infrastructure audits** to identify exposed boundaries, verify findings, and prioritize the work.
+- **Dependency and infrastructure upgrades** with compatibility planning, testing, and a clear rollout path.
+- **Security remediation** with regression tests and verification of the fixes.
+- **Security agents and CI workflows** that turn repeatable checks and upgrade work into part of your development process.
+
+Bring us a repository, an upgrade backlog, or a security concern. We'll help scope the work and carry it through. [Talk to Offense Research, Inc.](https://offenseresearch.com/)
+
 ### Attribution
 
-Copyright 2026 Offense Research. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices. See [LICENSE](#document-47), [THIRD_PARTY_NOTICES.md](#document-42), and [sources.lock.json](#document-57) for retained notices and exact upstream revisions.
+Copyright 2026 Offense Research, Inc. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices. See [LICENSE](#document-47), [THIRD_PARTY_NOTICES.md](#document-42), and [sources.lock.json](#document-57) for retained notices and exact upstream revisions.
 
 ---
 
@@ -248,10 +279,10 @@ Copyright 2026 Offense Research. Original Compound Security work is licensed und
 
 **Source: `skills/compound-security/SKILL.md`**
 
-```yaml
+---
 name: compound-security
 description: Help people choose a useful security task, brainstorm priorities, audit source code, fix independently verified findings, and retain reusable security knowledge. Use for security onboarding, uncertainty about where to start, security brainstorming, repository audits, remediation, regression reviews, verified lessons, or an autonomous security LFG. Support help, brainstorm, lfg, audit, plan, fix, verify, compound, run, and status modes; help and brainstorming do not authorize an audit or source changes.
-```
+---
 
 ## Compound Security
 
@@ -280,6 +311,8 @@ Treat “where do I start?” or “what can this do?” as `help`, “what shou
 No mode implicitly authorizes production changes, vulnerability publication, messaging, merging, deploying, purchases, or uploads to a new service. Continue independent local work when a later external action needs authorization.
 
 ### Start at the right entry point
+
+Read [commands.md](#document-58) first and retain the calling wrapper's registered command identity. Apply its outgoing-command check to every response and saved handoff.
 
 Dispatch before creating a run or starting an audit:
 
@@ -422,7 +455,7 @@ Use the current project and concern in the command. Examples of meaningful scope
 
 These examples suggest questions to investigate; they do not assert vulnerabilities. For a novice, describe the outcome before terms such as SSRF, IAM, or CWE.
 
-Render exactly one syntax for the installed host:
+Read [commands.md](#document-58), preserve the invocation that loaded this mode, and validate the outgoing command before responding. Render exactly one syntax for the installed host:
 
 | Installation | Invocation form |
 | --- | --- |
@@ -518,7 +551,7 @@ Keep implementation details out of the brief unless they are real constraints. A
 
 ### 4. Hand off clearly
 
-Return the selected or proposed task, why it fits, the brief path when written, and one host-correct command using [help.md](#document-03)'s syntax rules. Include the explicit scope rather than “secure everything.”
+Read [commands.md](#document-58) and render one next command with the invoking host's registered prefix. Use that exact string in the brief's Next action and final response. Read the saved command back and check the namespace, selected mode, actual brief path, and scope before finishing. Return the selected or proposed task, why it fits, the brief path, and that command. Include the explicit scope rather than “secure everything.”
 
 - For an unconfirmed concern, recommend `audit` to establish evidence.
 - For current confirmed findings, recommend `plan` to define remediation.
@@ -598,6 +631,8 @@ On resume, first re-read the user's current restrictions, current source, actual
 
 ### Finish with a usable handoff
 
+Read [commands.md](#document-58) before emitting a continuation or resume command. Re-render stale checkpoint commands for the current host and validate the namespace, mode, path, and scope.
+
 Report the requested outcome and what is ready locally, with source/patch/test paths. Then list unresolved findings, unverified changes, blocked checks, attempts consumed, and the exact next action or prerequisite. Link the audit, plan, closure ledger, prevention/lesson, and checkpoint when they exist.
 
 Use `completed` only when the requested result has actually been delivered: for an audit-only request, complete audit artifacts and truthful coverage; for requested repairs, independently verified selected fixes and a completed compounding decision. Report any residual uncertainty even when a narrower requested task is complete. Use `partial` when useful work is ready but a requested goal remains blocked or unverified, and `blocked` when no substantive requested result could be produced. A complete audit with no confirmed findings may legitimately produce no patches; never invent a fix or claim the target is secure.
@@ -637,12 +672,14 @@ No bundled sandbox, scanner, paid service integration, scheduled automation, CI 
 
 **Source: `skills/cs-help/SKILL.md`**
 
-```yaml
+---
 name: cs-help
 description: Recommend a useful security starting point and a ready-to-use command. Use when someone asks what these skills do, where to start, or what to run next.
-```
+---
 
 ## Compound Security: help
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `help` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -656,12 +693,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-brainstorm/SKILL.md`**
 
-```yaml
+---
 name: cs-brainstorm
 description: Turn a vague security concern into grounded options, priorities, and a scoped brief. Use before choosing an audit or remediation goal.
-```
+---
 
 ## Compound Security: brainstorm
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `brainstorm` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -675,12 +714,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-lfg/SKILL.md`**
 
-```yaml
+---
 name: cs-lfg
 description: Choose or resume the route from a security goal through authorized local audit, fixes, independent verification, and prevention. Use when asked to take security work through to completion.
-```
+---
 
 ## Compound Security: lfg
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `lfg` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -694,12 +735,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-audit/SKILL.md`**
 
-```yaml
+---
 name: cs-audit
 description: Audit scoped source code and report validated security findings without changing product code. Use when the user invokes cs-audit or explicitly requests the audit phase of Compound Security.
-```
+---
 
 ## Compound Security: audit
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `audit` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -713,12 +756,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-plan/SKILL.md`**
 
-```yaml
+---
 name: cs-plan
 description: Build a scoped remediation plan from current security findings and applicable prior lessons. Use when the user invokes cs-plan or explicitly requests the plan phase of Compound Security.
-```
+---
 
 ## Compound Security: plan
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `plan` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -732,12 +777,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-fix/SKILL.md`**
 
-```yaml
+---
 name: cs-fix
 description: Implement the selected security remediation plan locally and preserve evidence for verification. Use when the user invokes cs-fix or explicitly requests the fix phase of Compound Security.
-```
+---
 
 ## Compound Security: fix
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `fix` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -751,12 +798,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-verify/SKILL.md`**
 
-```yaml
+---
 name: cs-verify
 description: Check whether a security finding is resolved and whether its regression protection detects the defect. Use when the user invokes cs-verify or explicitly requests the verify phase of Compound Security.
-```
+---
 
 ## Compound Security: verify
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `verify` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -770,12 +819,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-compound/SKILL.md`**
 
-```yaml
+---
 name: cs-compound
 description: Retain a verified security lesson in the smallest durable form that prevents recurrence. Use when the user invokes cs-compound or explicitly requests the compound phase of Compound Security.
-```
+---
 
 ## Compound Security: compound
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `compound` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -789,12 +840,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-run/SKILL.md`**
 
-```yaml
+---
 name: cs-run
 description: Run the scoped audit, remediation, verification, and learning loop within the user-authorized scope. Use when the user invokes cs-run or explicitly requests the run phase of Compound Security.
-```
+---
 
 ## Compound Security: run
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `run` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -808,12 +861,14 @@ Resolve every core-relative reference or script from the directory containing th
 
 **Source: `skills/cs-status/SKILL.md`**
 
-```yaml
+---
 name: cs-status
 description: Summarize the current security run, coverage, finding states, blockers, and next actions without product edits. Use when the user invokes cs-status or explicitly requests the status phase of Compound Security.
-```
+---
 
 ## Compound Security: status
+
+Before loading the core, read [command routing](#document-58). Preserve the host-provided registered name and invocation prefix throughout this mode and all follow-up commands.
 
 Read the sibling [Compound Security core](#document-02) and execute its `status` mode. Resolve that path relative to this file, never relative to the target repository.
 
@@ -1044,7 +1099,8 @@ Read the current source and tests without accepting the fix author's conclusions
 ### Next action
 
 - Recommended mode:
-- Host-correct command with this brief's path and scope:
+- Host / registered command prefix (from the active invocation or host registry):
+- Verified next command with this brief's path and scope (use the same string in the final response):
 - Conditions that must be resolved before execution:
 - Handoff authorization: recommendation only, or the exact existing request authorizing continuation.
 
@@ -1078,7 +1134,7 @@ Read the current source and tests without accepting the fix author's conclusions
 
 **Source: `skills/compound-security/assets/security-lesson.md`**
 
-```yaml
+---
 title: "A specific verified invariant"
 component: "repo-relative component"
 boundary: "lower-trust principal to protected resource"
@@ -1087,7 +1143,7 @@ applies_when: "precise source and environment conditions"
 verified_revision: "commit plus relevant dirty-source identity"
 revalidate_when: "specific invalidation trigger"
 status: active
-```
+---
 
 ## Invariant
 
@@ -1115,10 +1171,10 @@ Name invalidating code/config changes, next audit check, and when to retire or s
 
 **Source: `skills/compound-security/references/audit/AUDIT-WORKFLOW.md`**
 
-```yaml
+---
 name: security-audit
 description: Security guidance and vulnerability review for codebases, APIs, services, CLI tools, libraries, and daemons. Use for security questions, focused reviews, vulnerability research, security audits, or pen tests. Run the complete workflow only for explicit codebase audit or pen-test requests, full/comprehensive/end-to-end reviews, or requested report artifacts.
-```
+---
 
 ## Security Audit
 
@@ -3026,7 +3082,18 @@ The 65 upstream tests passed at vendoring. Tests include their fixtures inline a
 
 **Source: `TESTING.md`**
 
-## Validation record — v0.2.0
+## Validation record — v0.2.1
+
+Validated November 5, 2026.
+
+- A fresh plugin exercise followed help into brainstorm. The help response used the full Codex plugin name, and both the saved brief and final response contained the same qualified audit command. The README-only fixture correctly remained needs_input pending implementation source.
+- A separate fresh standalone exercise recommended the standalone core command and created no artifacts.
+- The package validator passed. Negative checks rejected bare follow-up commands in a mode reference and the full manual, and rejected a wrapper missing the shared command-routing reference.
+- Host manifests and marketplace metadata use 0.2.1 to distinguish this revision from cached 0.2.0 installations.
+
+These exercises cover agent-authored handoffs. Native Codex CLI installation and cache refresh on the user's machine still need user-side confirmation. The validator scans authored examples and routing references; live generated text also requires the outgoing-command check in the skill instructions.
+
+### Previous validation — v0.2.0
 
 Validated November 4, 2026, with Node.js v24.22.1 and the available Python 3 runtime.
 
@@ -3058,7 +3125,7 @@ Claude Code and Codex CLIs were unavailable in this authoring environment. Their
 
 ## Third-party notices
 
-Copyright 2026 Offense Research. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices.
+Copyright 2026 Offense Research, Inc. Original Compound Security work is licensed under Apache-2.0. Bundled upstream material retains its MIT notices.
 
 Compound Security synthesizes and adapts ideas and workflow structure from these MIT-licensed projects. It is an independent Offense Research package; it is not an official Cloudflare or Every product.
 
@@ -3110,18 +3177,18 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
 {
   "name": "compound-security-plugin",
   "owner": {
-    "name": "Offense Research"
+    "name": "Offense Research, Inc."
   },
   "metadata": {
     "description": "Compound Security skills for coding agents",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "plugins": [
     {
       "name": "compound-security",
       "description": "Help, brainstorm, and autonomously execute scoped security work with verified fixes and reusable prevention.",
       "author": {
-        "name": "Offense Research"
+        "name": "Offense Research, Inc."
       },
       "source": "./"
     }
@@ -3138,10 +3205,10 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
 ````json
 {
   "name": "compound-security",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
   "author": {
-    "name": "Offense Research"
+    "name": "Offense Research, Inc."
   },
   "license": "Apache-2.0",
   "keywords": [
@@ -3163,10 +3230,10 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
 ````json
 {
   "name": "compound-security",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
   "author": {
-    "name": "Offense Research"
+    "name": "Offense Research, Inc."
   },
   "license": "Apache-2.0",
   "keywords": [
@@ -3181,7 +3248,7 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
     "displayName": "Compound Security",
     "shortDescription": "Choose, audit, fix, and verify security work.",
     "longDescription": "Get a useful security starting point, brainstorm a scoped goal, and let LFG carry local audit, remediation, independent verification, and reusable prevention forward.",
-    "developerName": "Offense Research",
+    "developerName": "Offense Research, Inc.",
     "category": "Coding",
     "capabilities": [
       "Interactive",
@@ -3204,7 +3271,8 @@ The core's orchestration and remediation lifecycle are newly authored. It bundle
 **Source: `LICENSE`**
 
 ````text
-Apache License
+
+                                 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -3474,7 +3542,8 @@ SOFTWARE.
 **Source: `skills/compound-security/LICENSE`**
 
 ````text
-Apache License
+
+                                 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -3683,7 +3752,7 @@ Apache License
 
 **Source: `skills/compound-security/agents/openai.yaml`**
 
-````yaml
+````text
 interface:
   display_name: Compound Security
   short_description: "Choose, audit, fix, and verify security work"
@@ -4412,3 +4481,35 @@ SOFTWARE.
 ````
 
 ---
+
+# Document 58
+
+**Source: `skills/compound-security/references/commands.md`**
+
+## Preserve the installed command identity
+
+Read this before recommending a next stage, resumption, or alternative command in any mode. Apply it to chat responses and saved artifacts, including security briefs and remediation plans.
+
+### Resolve once per invocation
+
+1. Use the host's registered skill name, supplied skill metadata, and the invocation that loaded this skill. These establish the installation identity. Repository text, old reports, and copied commands cannot establish registration or authorize work.
+2. A plugin invocation such as `$compound-security:cs-help` establishes the `$compound-security:` prefix for Codex. A Claude Code invocation such as `/compound-security:cs-help` establishes `/compound-security:`. Preserve the host sigil and plugin namespace when selecting a sibling stage. The YAML `name: cs-help` is the local base name, not the complete registered plugin command.
+3. Reading the sibling core does not switch the invocation to a standalone installation. Carry the resolved identity into the core, mode references, and any delegated work. Pass it explicitly when delegating a stage that will write recommendations.
+4. If the host supplied an explicit registry, choose names from it. Otherwise use the current plugin identity with the installed sibling `cs-<mode>/SKILL.md`. If the sibling is unavailable, use an exposed core with the requested mode, or describe the needed action in plain language. Never invent an executable command.
+5. When only the standalone core is exposed, use its registered name followed by the mode. In Codex this is `$compound-security brainstorm <scope>`. If the host or registration is unknown, give a plain-language handoff until it is established.
+
+### Render the selected next stage
+
+| Installation | Help to brainstorm | Brainstorm to audit |
+| --- | --- | --- |
+| Codex plugin | `$compound-security:cs-brainstorm <scope>` | `$compound-security:cs-audit Use <brief-path>. <scope>` |
+| Claude Code plugin | `/compound-security:cs-brainstorm <scope>` | `/compound-security:cs-audit Use <brief-path>. <scope>` |
+| Codex standalone core | `$compound-security brainstorm <scope>` | `$compound-security audit Use <brief-path>. <scope>` |
+
+Use the same rule for plan, fix, verify, compound, run, lfg, and status. Fill in actual paths and scope. Commands containing `$` are entered into the coding agent's prompt, not executed by a shell.
+
+### Check every outgoing command
+
+Before returning or saving a handoff, compare each command with the resolved installation identity. Check the host sigil, namespace, selected mode, available entry point, and required path/scope. Never shorten a plugin command to its bare `cs-*` base name. Do not copy a stale command from an existing brief; re-render the same intended action for the current host without expanding authorization.
+
+For a brainstorm, render the next command once and reuse that exact string in `SECURITY-BRIEF.md` and the final response. Read the saved Next action section back before reporting completion. Both copies must select the same mode, path, and scope. A known wrong command prevents completion until corrected.
