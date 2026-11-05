@@ -1,0 +1,20 @@
+{
+  "name": "compound-security-plugin",
+  "owner": {
+    "name": "Offense Research"
+  },
+  "metadata": {
+    "description": "Compound Security skills for coding agents",
+    "version": "0.2.0"
+  },
+  "plugins": [
+    {
+      "name": "compound-security",
+      "description": "Help, brainstorm, and autonomously execute scoped security work with verified fixes and reusable prevention.",
+      "author": {
+        "name": "Offense Research"
+      },
+      "source": "./"
+    }
+  ]
+}

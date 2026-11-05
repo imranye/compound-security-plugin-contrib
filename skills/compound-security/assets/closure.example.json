@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "audit_revision": "example-audited-commit",
+  "current_revision": "example-fixed-commit+dirty:example-digest",
+  "entries": [
+    {
+      "fingerprint": "example:tenant-export:missing-owner-check",
+      "status": "compounded",
+      "plan": {
+        "summary": "Require the authenticated tenant predicate in the export query.",
+        "regression_plan": "Assert that tenant A cannot export tenant B's records.",
+        "compatibility_plan": "Assert that a tenant can still export its own records.",
+        "rollback": "Revert the patch and disable exports while investigating a regression."
+      },
+      "fix": {
+        "author": "fixer-session-1",
+        "revision": "example-fixed-commit+dirty:example-digest",
+        "changed_files": ["src/export.js", "tests/export-security.test.js"]
+      },
+      "verification": {
+        "verifier": "reviewer-session-2",
+        "reviewed_revision": "example-fixed-commit+dirty:example-digest",
+        "evidence_files": ["evidence/independent-review.md"],
+        "regression": {
+          "before": {
+            "revision": "example-audited-commit",
+            "result": "fail",
+            "evidence_file": "evidence/regression-before.log"
+          },
+          "after": {
+            "revision": "example-fixed-commit+dirty:example-digest",
+            "result": "pass",
+            "evidence_file": "evidence/regression-after.log"
+          }
+        },
+        "compatibility": {
+          "revision": "example-fixed-commit+dirty:example-digest",
+          "result": "pass",
+          "evidence_file": "evidence/compatibility.log"
+        }
+      },
+      "compound": {
+        "lesson_file": "docs/solutions/security/tenant-export-scope.md",
+        "prevention_files": ["tests/export-security.test.js"],
+        "applies_to": ["tenant-scoped exports", "bulk data read endpoints"]
+      }
+    }
+  ]
+}

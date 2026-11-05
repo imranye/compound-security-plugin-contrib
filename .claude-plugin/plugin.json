@@ -1,0 +1,16 @@
+{
+  "name": "compound-security",
+  "version": "0.2.0",
+  "description": "Choose a security starting point, brainstorm priorities, and carry verified fixes into reusable prevention.",
+  "author": {
+    "name": "Offense Research"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "security",
+    "audit",
+    "remediation",
+    "verification",
+    "compound-security"
+  ]
+}

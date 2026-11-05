@@ -1,0 +1,13 @@
+interface:
+  display_name: Compound Security
+  short_description: "Choose, audit, fix, and verify security work"
+  default_prompt: "Use $compound-security help to recommend the best security starting point for this project."
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
